@@ -17,6 +17,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  icon_font_generator: ^4.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -43,6 +44,9 @@ flutter:
     - assets/icons/lock_icon.png
 
   fonts:
+    - family: MechanixIcons
+      fonts:
+        - asset: assets/fonts/MechanixIcons.ttf
     - family: Overused Grotesk
       fonts:
         - asset: assets/fonts/OverusedGrotesk-Roman.ttf
@@ -57,6 +61,14 @@ flutter:
           weight: 700
         - asset: assets/fonts/OverusedGrotesk-Light.ttf
           weight: 300
+
+icon_font_generator:
+  from: assets/icons/svg
+  out_font: assets/fonts/MechanixIcons.ttf
+  out_flutter: lib/src/icons/mechanix_icons.dart
+  class_name: MechanixIcons
+  font_family: MechanixIcons
+  package: mechanix_widgets
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

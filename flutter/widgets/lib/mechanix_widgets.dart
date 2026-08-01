@@ -19,6 +19,7 @@ export 'src/extensions/theme_extension.dart';
 
 // Icons
 export 'src/icons/mechanix_icon_images.dart';
+export 'src/icons/mechanix_icons.dart';
 
 // Theme
 export 'src/theme/color_setting.dart';

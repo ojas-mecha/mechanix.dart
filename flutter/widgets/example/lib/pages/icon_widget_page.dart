@@ -30,7 +30,21 @@ class _MechanixIconWidgetState extends State<MechanixIconWidget> {
             iconHeight: 20,
             iconPath: MechanixIconImages.wifi,
           ),
-          IconWidget.fromIconData(icon: Icon(Icons.wallet))
+          IconWidget.fromIconData(icon: Icon(Icons.wallet)),
+          const SizedBox(height: 20),
+          const Text('MechanixIcons Font:'),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(MechanixIcons.home, size: 28),
+              SizedBox(width: 16),
+              Icon(MechanixIcons.wifi, size: 28),
+              SizedBox(width: 16),
+              Icon(MechanixIcons.bluetooth, size: 28),
+              SizedBox(width: 16),
+              Icon(MechanixIcons.settings, size: 28),
+            ],
+          ),
         ],
       ),
     );
