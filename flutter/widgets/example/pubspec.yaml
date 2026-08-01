@@ -17,7 +17,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  widgets:
+  mechanix_widgets:
     # When depending on this package from a real application you should use:
     #   widgets: ^x.y.z
     # See https://dart.dev/tools/pub/dependencies#version-constraints
