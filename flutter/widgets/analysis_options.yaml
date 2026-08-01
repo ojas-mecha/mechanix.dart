@@ -1,23 +1,42 @@
 include: package:flutter_lints/flutter.yaml
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
-
 analyzer:
-  strong-mode:
-    implicit-casts: false
-    implicit-dynamic: false
   errors:
     unused_element: warning
     unused_field: warning
     unused_import: warning
     unused_local_variable: warning
+    missing_required_param: error
+    missing_return: error
+    todo: ignore
 
 linter:
   rules:
-    # Unused code rules
-    - avoid_unused_constructor_parameters
+    # Performance Rules
+    - prefer_const_constructors
+    - prefer_const_constructors_in_immutables
+    - prefer_const_declarations
+    - prefer_const_literals_to_create_immutables
+    - avoid_unnecessary_containers
+    - sized_box_for_whitespace
+    - sized_box_shrink_expand
+
+    # Safety & Quality Rules
+    - use_build_context_synchronously
+    - avoid_print
+    - cancel_subscriptions
+    - close_sinks
+    - depend_on_referenced_packages
+    - always_declare_return_types
+    - avoid_empty_else
+    - avoid_relative_lib_imports
+    - avoid_types_as_parameter_names
+    - empty_catches
     - no_duplicate_case_values
+    - valid_regexps
+
+    # Clean Code Rules
+    - avoid_unused_constructor_parameters
     - unnecessary_async
     - unnecessary_await_in_return
     - unnecessary_const
