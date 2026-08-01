@@ -53,6 +53,8 @@ export 'src/widgets/mechanix_elevated_button.dart';
 export 'src/widgets/mechanix_outline_button.dart';
 export 'src/widgets/mechanix_text_button.dart';
 export 'src/widgets/menu/constants/menu_selection_type.dart';
+export 'src/widgets/menu/constants/menu_transitions.dart';
+export 'src/widgets/menu/constants/menu_positions.dart';
 export 'src/widgets/menu/mechanix_menu.dart';
 export 'src/widgets/menu/mechanix_menu_theme.dart';
 export 'src/widgets/menu/models/mechanix_menu_item.dart';

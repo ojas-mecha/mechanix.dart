@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
-import 'package:widgets/widgets/menu/models/mechanix_menu_item.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 class FabExamplePage extends StatefulWidget {
   const FabExamplePage({super.key});

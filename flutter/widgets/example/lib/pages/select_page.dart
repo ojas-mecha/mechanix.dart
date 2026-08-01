@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/select/select_type.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 enum DisplayScreenOffTime {
   tenSeconds,

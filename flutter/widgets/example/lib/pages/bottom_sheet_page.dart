@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/widgets.dart';
-import 'package:widgets/widgets/list_items/mechanix_simple_list_theme.dart';
-import 'package:widgets/widgets/list_items/simple_list_items_type.dart';
-import 'package:widgets/widgets/text_input/mechanix_text_input_theme.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 class BottomSheetPage extends StatelessWidget {
   const BottomSheetPage({super.key});

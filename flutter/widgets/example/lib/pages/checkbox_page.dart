@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/widgets.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 class CheckboxPage extends StatefulWidget {
   const CheckboxPage({super.key});

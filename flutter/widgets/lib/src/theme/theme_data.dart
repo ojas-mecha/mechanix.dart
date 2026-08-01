@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanix_widgets/src/constants/mechanix_constants.dart';
-import 'package:mechanix_widgets/src/theme/Common_themes/text_theme.dart';
 import 'package:mechanix_widgets/src/theme/color_setting.dart';
+import 'package:mechanix_widgets/src/theme/common_themes/text_theme.dart';
 import 'package:mechanix_widgets/src/theme/touch_splash_factory.dart';
 
 ThemeData createTheme(
@@ -180,13 +180,13 @@ ThemeData createLightTheme({
     brightness: Brightness.light,
   );
 
-  final colorSetting = ColorSetting(
-    accentColor: primaryColor,
-    background: backgroundColor ?? defaultBackgroundColor,
-    foreground: foregroundColor ?? defaultForegroundColor,
-  );
+  // final colorSetting = ColorSetting(
+  //   accentColor: primaryColor,
+  //   background: backgroundColor ?? defaultBackgroundColor,
+  //   foreground: foregroundColor ?? defaultForegroundColor,
+  // );
 
-  final themeColors = colorSetting.getThemeColor(themeMode: ThemeMode.light);
+  // final themeColors = colorSetting.getThemeColor(themeMode: ThemeMode.light);
 
   return createTheme(colorScheme: colorScheme);
 }

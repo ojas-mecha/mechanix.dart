@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:widgets/mechanix.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 class MechanixTextInputPage extends StatefulWidget {
   const MechanixTextInputPage({super.key});

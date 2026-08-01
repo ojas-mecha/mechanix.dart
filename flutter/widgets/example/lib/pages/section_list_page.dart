@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/section_list/mechanix_section_list_theme.dart';
-import 'package:widgets/widgets/section_list/section_list_items_type.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 List<SectionListItems> generateLargeList() {
   return List<SectionListItems>.generate(10000, (index) {

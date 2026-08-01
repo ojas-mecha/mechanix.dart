@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/slider/mechanix_slider_theme.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 class MechanixSliderPage extends StatefulWidget {
   const MechanixSliderPage({super.key});

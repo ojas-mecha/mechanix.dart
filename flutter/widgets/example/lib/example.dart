@@ -23,7 +23,7 @@ class _MasterDetailPage extends StatefulWidget {
   State<_MasterDetailPage> createState() => _MasterDetailPageState();
 }
 
-class _MasterDetailPageState extends State<_MasterDetailPage> with WatchItMixin {
+class _MasterDetailPageState extends State<_MasterDetailPage> {
   int _selectedIndex = 15;
 
   @override
@@ -41,7 +41,7 @@ class _MasterDetailPageState extends State<_MasterDetailPage> with WatchItMixin 
                 Column(
                   children: [
                     ThemeToggleButton(
-                      themeMode: watchPropertyValue((ThemeToggle t) => t.themeMode),
+                      themeMode: di<ThemeToggle>().themeMode,
                       onThemeModeChanged: (mode) => di<ThemeToggle>().setThemeMode(mode),
                     ),
                     Expanded(

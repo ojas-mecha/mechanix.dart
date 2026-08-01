@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/widgets/search_bar/mechanix_search_bar.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 class SearchBarPage extends StatefulWidget {
   const SearchBarPage({super.key});

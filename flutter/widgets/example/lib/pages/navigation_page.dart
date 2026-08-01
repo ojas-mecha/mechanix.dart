@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 class NavigationPage extends StatelessWidget {
   const NavigationPage({super.key});
