@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oklch/oklch.dart';
 import 'package:watch_it/watch_it.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/theme/color_setting.dart';
-import 'package:widgets/types/theme_colors.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
+import '../theme_toggle.dart';
 
 class MechanixThemeColorsPage extends StatelessWidget with WatchItMixin {
   const MechanixThemeColorsPage({super.key});
@@ -98,7 +97,11 @@ class MechanixThemeColorsPage extends StatelessWidget with WatchItMixin {
           child: Column(
             spacing: 40,
             children: [
-              VariantPicker(),
+              VariantPicker(
+                selectedVariant: mechanixVariant,
+                onVariantChanged: (variant) =>
+                    di<ThemeToggle>().setThemeVariant(variant),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mechanix_widgets/mechanix_widgets.dart';
+import 'package:mechanix_widgets/src/theme/variants.dart';
 
 class ThemeToggle extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.dark;

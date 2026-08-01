@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:watch_it/watch_it.dart';
-import 'package:widgets/mechanix.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 import 'package:widgets_example/example.dart';
+import 'theme_toggle.dart';
 
 import 'pages/navigation_second_page.dart';
 

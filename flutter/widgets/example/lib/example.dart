@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/widgets.dart';
+import 'package:watch_it/watch_it.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
+import 'theme_toggle.dart';
 
 import 'example_page_items.dart';
 
@@ -21,7 +23,7 @@ class _MasterDetailPage extends StatefulWidget {
   State<_MasterDetailPage> createState() => _MasterDetailPageState();
 }
 
-class _MasterDetailPageState extends State<_MasterDetailPage> {
+class _MasterDetailPageState extends State<_MasterDetailPage> with WatchItMixin {
   int _selectedIndex = 15;
 
   @override
@@ -38,7 +40,10 @@ class _MasterDetailPageState extends State<_MasterDetailPage> {
                 // Sidebar column with icon at top
                 Column(
                   children: [
-                    ThemeToggleButton(),
+                    ThemeToggleButton(
+                      themeMode: watchPropertyValue((ThemeToggle t) => t.themeMode),
+                      onThemeModeChanged: (mode) => di<ThemeToggle>().setThemeMode(mode),
+                    ),
                     Expanded(
                       // ← Give the sidebar expanded height
                       child: _buildSidebar(context),

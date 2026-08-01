@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:watch_it/watch_it.dart';
-import 'package:mechanix_widgets/mechanix_widgets.dart';
+import '../../theme/variants.dart';
 
-class VariantPicker extends StatelessWidget with WatchItMixin {
-  const VariantPicker({super.key});
+class VariantPicker extends StatelessWidget {
+  const VariantPicker({
+    super.key,
+    this.selectedVariant,
+    this.onVariantChanged,
+  });
+
+  final MechanixVariant? selectedVariant;
+  final ValueChanged<MechanixVariant>? onVariantChanged;
 
   @override
   Widget build(BuildContext context) {
-    final model = di<ThemeToggle>();
-    // final mechanixVariant =
-    //     watchPropertyValue((ThemeToggle t) => (t.mechanixVariant));
-
-    return PopupMenuButton(
-      icon: Icon(Icons.colorize),
+    return PopupMenuButton<MechanixVariant>(
+      icon: const Icon(Icons.colorize),
       tooltip: 'Pick A Variant',
-      offset: Offset(20, 20),
+      offset: const Offset(20, 20),
+      onSelected: onVariantChanged,
       itemBuilder: (context) {
         return [
           for (final variant in MechanixVariant.values)
-            PopupMenuItem(
-              onTap: () => model.setThemeVariant(variant),
+            PopupMenuItem<MechanixVariant>(
+              value: variant,
               child: Row(
                 children: [
                   Container(
@@ -27,11 +30,11 @@ class VariantPicker extends StatelessWidget with WatchItMixin {
                       shape: BoxShape.circle,
                       color: variant.color,
                     ),
-                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
                     height: 20,
                     width: 20,
                   ),
-                  Text(variant.name)
+                  Text(variant.name),
                 ],
               ),
             )
