@@ -55,7 +55,7 @@ The **Direct Child** approach is the simplest way to apply MechanixTheme to your
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 void main() {
   runApp(MyApp());
@@ -81,7 +81,7 @@ The **Builder Pattern** approach provides maximum flexibility and control over t
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 import 'package:watch_it/watch_it.dart';
 
 void main() {
@@ -115,6 +115,21 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+```
+
+### 🎨 Custom Icon Font (`MechanixIcons`)
+
+```dart
+Icon(MechanixIcons.home)
+Icon(MechanixIcons.wifi)
+Icon(MechanixIcons.bluetooth)
+Icon(MechanixIcons.settings)
+```
+
+To update or add SVG vector icons, compile them into the font with:
+
+```bash
+dart run icon_font_generator:generator assets/icons/svg assets/fonts/MechanixIcons.ttf
 ```
 
 ## Mechanix Widgets
@@ -153,7 +168,7 @@ $ flutter-elinux run
 Add to your `pubspec.yaml`:
 
 ```yaml
-  widgets:
+  mechanix_widgets:
     git:
       url: https://github.com/mecha-org/mechanix.dart.git
       path: flutter/widgets
@@ -167,7 +182,7 @@ Add to your `pubspec.yaml`:
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -194,7 +209,7 @@ class HomePage extends StatelessWidget {
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 class HomePage extends StatelessWidget {
   @override

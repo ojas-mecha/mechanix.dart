@@ -1,4 +1,4 @@
 # Files and directories ignored when publishing package to pub.dev
-
-# Internal developer build tools
-tool/
+.idea/
+.vscode/
+*.log
