@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/wheel_scroll/mechanix_wheel_scroll_theme.dart';
-import 'package:widgets/widgets/wheel_scroll/wheel_scroll_options_type.dart';
+import 'package:mechanix_widgets/src/extensions/theme_extension.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
+import 'package:mechanix_widgets/src/widgets/wheel_scroll/mechanix_wheel_scroll_theme.dart';
+import 'package:mechanix_widgets/src/widgets/wheel_scroll/wheel_scroll_options_type.dart';
 
 class MechanixWheelScroll<T> extends StatefulWidget {
   const MechanixWheelScroll({

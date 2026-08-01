@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 import './theme_data.dart';
 // TODO: Revisit this code later

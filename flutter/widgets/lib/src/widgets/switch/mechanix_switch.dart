@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/switch/mechanix_switch_theme.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
+import 'package:mechanix_widgets/src/widgets/switch/mechanix_switch_theme.dart';
 
 class MechanixSwitch extends StatefulWidget {
   /// Current state of the switch

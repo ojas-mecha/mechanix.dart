@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/widgets/select/select_type.dart';
+import 'package:mechanix_widgets/src/widgets/select/select_type.dart';
 
 extension SelectOptionX<T> on T {
   SelectOption<T> toSelectOption(String label,

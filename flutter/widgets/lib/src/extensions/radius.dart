@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/constants.dart';
+import 'package:mechanix_widgets/src/constants/mechanix_constants.dart';
 
 extension CircularRadius on BorderRadius {
   static final xs = BorderRadius.circular(2.0);

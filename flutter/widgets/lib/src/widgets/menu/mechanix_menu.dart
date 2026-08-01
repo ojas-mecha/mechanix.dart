@@ -1,13 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/menu/constants/menu_positions.dart';
-import 'package:widgets/widgets/menu/constants/menu_transitions.dart';
-import 'package:widgets/widgets/menu/mechanix_menu_theme.dart';
-import 'package:widgets/widgets/menu/models/mechanix_menu_item.dart';
-import 'package:widgets/widgets/menu/utils/menu_utils.dart';
-import 'package:widgets/widgets/wing/mechanix_wing.dart';
+import 'package:mechanix_widgets/src/extensions/theme_extension.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
+import 'package:mechanix_widgets/src/widgets/menu/constants/menu_positions.dart';
+import 'package:mechanix_widgets/src/widgets/menu/constants/menu_transitions.dart';
+import 'package:mechanix_widgets/src/widgets/menu/mechanix_menu_theme.dart';
+import 'package:mechanix_widgets/src/widgets/menu/models/mechanix_menu_item.dart';
+import 'package:mechanix_widgets/src/widgets/menu/utils/menu_utils.dart';
+import 'package:mechanix_widgets/src/widgets/wing/mechanix_wing.dart';
 
 class MechanixMenu extends StatefulWidget {
   const MechanixMenu({

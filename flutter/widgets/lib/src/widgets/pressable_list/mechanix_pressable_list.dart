@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/pressable_list/mechanix_pressable_list_theme.dart';
+import 'package:mechanix_widgets/src/extensions/theme_extension.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
+import 'package:mechanix_widgets/src/widgets/pressable_list/mechanix_pressable_list_theme.dart';
 
 class MechanixSelectableList extends StatelessWidget {
   final GestureTapCallback? onLongPress;

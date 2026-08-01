@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/icons/mechanix_icon_images.dart';
-import 'package:widgets/widgets.dart';
+import 'package:mechanix_widgets/src/extensions/theme_extension.dart';
+import 'package:mechanix_widgets/src/icons/mechanix_icon_images.dart';
+import '../icon_widget.dart';
 
 import 'mechanix_search_bar_theme.dart';
 

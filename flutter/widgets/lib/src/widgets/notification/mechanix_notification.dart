@@ -2,10 +2,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/notification/mechanix_notification_theme.dart';
-import 'package:widgets/widgets/notification/notification_type.dart';
+import 'package:mechanix_widgets/src/extensions/theme_extension.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
+import 'package:mechanix_widgets/src/widgets/notification/mechanix_notification_theme.dart';
+import 'package:mechanix_widgets/src/widgets/notification/notification_type.dart';
 
 class MechanixNotification {
   static OverlayEntry? _currentOverlay;

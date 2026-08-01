@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:watch_it/watch_it.dart';
-import 'package:widgets/mechanix.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 class VariantPicker extends StatelessWidget with WatchItMixin {
   const VariantPicker({super.key});

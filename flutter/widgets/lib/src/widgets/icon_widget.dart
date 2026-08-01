@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
+import '../constants/package_constants.dart';
+import '../extensions/build_context.dart';
 
 class IconWidget extends StatelessWidget {
   const IconWidget({
@@ -24,7 +25,7 @@ class IconWidget extends StatelessWidget {
     this.iconColor,
     this.activeIconColor,
     this.isActive = false,
-    this.package = 'widgets',
+    this.package = kPackageName,
     required this.iconPath,
   }) : icon = null;
 

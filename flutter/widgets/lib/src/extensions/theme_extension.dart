@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/bottom_bar/mechanix_bottom_bar_theme.dart';
-import 'package:widgets/widgets/bottom_sheet_modals/mechanix_bottom_sheet_theme.dart';
-import 'package:widgets/widgets/filled_button/mechanix_filled_button_theme.dart';
-import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
-import 'package:widgets/widgets/list_items/mechanix_simple_list_theme.dart';
-import 'package:widgets/widgets/menu/mechanix_menu_theme.dart';
-import 'package:widgets/widgets/navigation_bar/mechanix_navigation_bar_theme.dart';
-import 'package:widgets/widgets/notification/mechanix_notification_theme.dart';
-import 'package:widgets/widgets/pressable_list/mechanix_pressable_list_theme.dart';
-import 'package:widgets/widgets/search_bar/mechanix_search_bar_theme.dart';
-import 'package:widgets/widgets/section_list/mechanix_section_list_theme.dart';
-import 'package:widgets/widgets/select/mechanix_select_theme.dart';
-import 'package:widgets/widgets/slider/mechanix_slider_theme.dart';
-import 'package:widgets/widgets/text_input/mechanix_text_input_theme.dart';
-import 'package:widgets/widgets/wheel_scroll/mechanix_wheel_scroll_theme.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
+import 'package:mechanix_widgets/src/widgets/bottom_bar/mechanix_bottom_bar_theme.dart';
+import 'package:mechanix_widgets/src/widgets/bottom_sheet_modals/mechanix_bottom_sheet_theme.dart';
+import 'package:mechanix_widgets/src/widgets/filled_button/mechanix_filled_button_theme.dart';
+import 'package:mechanix_widgets/src/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
+import 'package:mechanix_widgets/src/widgets/list_items/mechanix_simple_list_theme.dart';
+import 'package:mechanix_widgets/src/widgets/menu/mechanix_menu_theme.dart';
+import 'package:mechanix_widgets/src/widgets/navigation_bar/mechanix_navigation_bar_theme.dart';
+import 'package:mechanix_widgets/src/widgets/notification/mechanix_notification_theme.dart';
+import 'package:mechanix_widgets/src/widgets/pressable_list/mechanix_pressable_list_theme.dart';
+import 'package:mechanix_widgets/src/widgets/search_bar/mechanix_search_bar_theme.dart';
+import 'package:mechanix_widgets/src/widgets/section_list/mechanix_section_list_theme.dart';
+import 'package:mechanix_widgets/src/widgets/select/mechanix_select_theme.dart';
+import 'package:mechanix_widgets/src/widgets/slider/mechanix_slider_theme.dart';
+import 'package:mechanix_widgets/src/widgets/text_input/mechanix_text_input_theme.dart';
+import 'package:mechanix_widgets/src/widgets/wheel_scroll/mechanix_wheel_scroll_theme.dart';
 
 extension MechanixWheelScrollThemeDataExtensions
     on MechanixWheelScrollThemeData {

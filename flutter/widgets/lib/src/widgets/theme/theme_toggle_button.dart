@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:watch_it/watch_it.dart';
-import 'package:widgets/widgets/theme/theme_toggle.dart';
+import 'package:mechanix_widgets/src/widgets/theme/theme_toggle.dart';
 
 class ThemeToggleButton extends StatelessWidget with WatchItMixin {
   const ThemeToggleButton({super.key});

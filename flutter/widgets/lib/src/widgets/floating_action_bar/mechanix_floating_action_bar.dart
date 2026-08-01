@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
-import 'package:widgets/widgets/menu/constants/menu_positions.dart';
-import 'package:widgets/widgets/menu/utils/menu_utils.dart';
+import 'package:mechanix_widgets/src/extensions/theme_extension.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
+import 'package:mechanix_widgets/src/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
+import 'package:mechanix_widgets/src/widgets/menu/constants/menu_positions.dart';
+import 'package:mechanix_widgets/src/widgets/menu/utils/menu_utils.dart';
 
 class MechanixFloatingActionBar extends StatefulWidget {
   const MechanixFloatingActionBar({

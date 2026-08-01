@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/widgets/menu/constants/menu_positions.dart';
-import 'package:widgets/widgets/menu/models/menu_position.dart';
+import 'package:mechanix_widgets/src/widgets/menu/constants/menu_positions.dart';
+import 'package:mechanix_widgets/src/widgets/menu/models/menu_position.dart';
 
 Offset calculateSmartOffset({
   required BuildContext context,

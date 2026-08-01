@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/constants.dart';
-import 'package:widgets/theme/Common_themes/text_theme.dart';
-import 'package:widgets/theme/color_setting.dart';
-import 'package:widgets/theme/touch_splash_factory.dart';
+import 'package:mechanix_widgets/src/constants/mechanix_constants.dart';
+import 'package:mechanix_widgets/src/theme/Common_themes/text_theme.dart';
+import 'package:mechanix_widgets/src/theme/color_setting.dart';
+import 'package:mechanix_widgets/src/theme/touch_splash_factory.dart';
 
 ThemeData createTheme(
     {bool useMaterial3 = true, required ColorScheme colorScheme}) {

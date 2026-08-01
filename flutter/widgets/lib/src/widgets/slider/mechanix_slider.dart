@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/slider/mechanix_slider_theme.dart';
+import 'package:mechanix_widgets/src/extensions/theme_extension.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
+import 'package:mechanix_widgets/src/widgets/slider/mechanix_slider_theme.dart';
 
 class MechanixSlider extends StatefulWidget {
   final double initialValue;

@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:widgets/constants.dart';
-import 'package:widgets/mechanix.dart';
+import 'package:mechanix_widgets/src/constants/mechanix_constants.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 class MechanixTheme extends StatefulWidget {
   const MechanixTheme(

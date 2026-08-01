@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/bottom_sheet_modals/mechanix_bottom_sheet_theme.dart';
-import 'package:widgets/widgets/wing/mechanix_wing.dart';
+import 'package:mechanix_widgets/src/extensions/theme_extension.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
+import 'package:mechanix_widgets/src/widgets/bottom_sheet_modals/mechanix_bottom_sheet_theme.dart';
+import 'package:mechanix_widgets/src/widgets/wing/mechanix_wing.dart';
 
 class MechanixBottomSheet extends StatelessWidget {
   const MechanixBottomSheet({

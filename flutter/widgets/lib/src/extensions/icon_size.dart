@@ -1,4 +1,4 @@
-import 'package:widgets/constants.dart';
+import 'package:mechanix_widgets/src/constants/mechanix_constants.dart';
 
 extension IconSize on double {
   static const double xs = 12;

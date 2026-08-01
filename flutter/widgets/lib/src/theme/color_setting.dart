@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oklch/oklch.dart';
-import 'package:widgets/types/theme_colors.dart';
+import 'package:mechanix_widgets/src/types/theme_colors.dart';
 
 class ColorSetting {
   const ColorSetting({
