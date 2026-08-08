@@ -82,7 +82,6 @@ The **Builder Pattern** approach provides maximum flexibility and control over t
 ```dart
 import 'package:flutter/material.dart';
 import 'package:mechanix_widgets/mechanix_widgets.dart';
-import 'package:watch_it/watch_it.dart';
 
 void main() {
   runApp(MyApp());
@@ -91,11 +90,6 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final themeMode = watchPropertyValue((ThemeToggle t) => t.themeMode);
-    final mechanixVariant = watchPropertyValue(
-      (ThemeToggle t) => t.mechanixVariant,
-    );
-
     return MechanixTheme(
       data: MechanixThemeData(
         mechanixVariant: MechanixVariant.blue,
@@ -106,7 +100,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           theme: mechanixData.lightTheme,     // Access resolved light theme
           darkTheme: mechanixData.darkTheme,   // Access resolved dark theme  
-          themeMode: themeMode,   // Use resolved theme mode
+          themeMode: ThemeMode.system,         // Use resolved theme mode
           title: 'My Mechanix App',
           home: child,
         );

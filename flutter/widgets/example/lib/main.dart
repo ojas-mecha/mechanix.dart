@@ -1,34 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:watch_it/watch_it.dart';
-import 'package:mechanix_widgets/mechanix_widgets.dart';
-import 'package:widgets_example/example.dart';
+import 'catalog/catalog_theme.dart';
 import 'theme_toggle.dart';
 
+import 'catalog/catalog_app.dart';
 import 'pages/navigation_second_page.dart';
 
 void main() {
-  di.registerSingleton(ThemeToggle());
   runApp(const MechanixApp());
 }
 
-class MechanixApp extends StatelessWidget with WatchItMixin {
+class MechanixApp extends StatelessWidget {
   const MechanixApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final themeMode = watchPropertyValue((ThemeToggle t) => t.themeMode);
-    final mechanixVariant =
-        watchPropertyValue((ThemeToggle t) => t.mechanixVariant);
+    return ListenableBuilder(
+      listenable: ThemeToggle.instance,
+      builder: (context, _) {
+        final catalogThemeStyle = ThemeToggle.instance.catalogThemeStyle;
+        final mechanixVariant = ThemeToggle.instance.mechanixVariant;
+        final themeMode = ThemeToggle.instance.themeMode;
 
-    return MechanixTheme(
-      data: MechanixThemeData(
-        mechanixVariant: mechanixVariant,
-      ),
-      builder: (context, mechanix, child) => _MechanixApp(
-        darkTheme: mechanix.darkTheme,
-        lightTheme: mechanix.lightTheme,
-        themeMode: themeMode,
-      ),
+        final lightTheme = CatalogTheme.getTheme(
+          style: catalogThemeStyle,
+          brightness: Brightness.light,
+          mechanixVariant: mechanixVariant,
+        );
+        final darkTheme = CatalogTheme.getTheme(
+          style: catalogThemeStyle,
+          brightness: Brightness.dark,
+          mechanixVariant: mechanixVariant,
+        );
+
+        return _MechanixApp(
+          darkTheme: darkTheme,
+          lightTheme: lightTheme,
+          themeMode: themeMode,
+        );
+      },
     );
   }
 }
@@ -52,9 +61,7 @@ class _MechanixApp extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: themeMode,
       routes: {'/navigation-second-route': (context) => NavigationSecondPage()},
-      home: Scaffold(
-        body: const Example(),
-      ),
+      home: const CatalogAppShell(),
     );
   }
 }

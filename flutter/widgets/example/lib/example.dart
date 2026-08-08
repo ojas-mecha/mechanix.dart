@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:watch_it/watch_it.dart';
 import 'package:mechanix_widgets/mechanix_widgets.dart';
 import 'theme_toggle.dart';
 
@@ -41,8 +40,9 @@ class _MasterDetailPageState extends State<_MasterDetailPage> {
                 Column(
                   children: [
                     ThemeToggleButton(
-                      themeMode: di<ThemeToggle>().themeMode,
-                      onThemeModeChanged: (mode) => di<ThemeToggle>().setThemeMode(mode),
+                      themeMode: ThemeToggle.instance.themeMode,
+                      onThemeModeChanged: (mode) =>
+                          ThemeToggle.instance.setThemeMode(mode),
                     ),
                     Expanded(
                       // ← Give the sidebar expanded height
