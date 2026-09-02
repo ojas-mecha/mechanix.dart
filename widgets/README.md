@@ -1,39 +1,42 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Widgets
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+A collection of common and reusable Flutter widgets and icons designed specifically for building **Mechanix Apps**.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+---
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## 🚀 Getting Started
 
-## Features
+### Installation
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Add `widgets` to your `pubspec.yaml`:
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  widgets:
+    path: ../path/to/widgets # or git / hosted dependency
 ```
 
-## Additional information
+### Import
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+import 'package:widgets/widgets.dart';
+```
+
+---
+
+## 🛠️ Generate Icon Font
+
+Run the generator from the `widgets` directory:
+
+```bash
+dart run icon_font_generator:generator
+```
+
+---
+
+## 🧪 Testing & Validation
+
+```bash
+flutter test
+flutter analyze
+```

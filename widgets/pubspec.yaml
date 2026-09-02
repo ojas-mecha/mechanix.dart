@@ -27,12 +27,12 @@ flutter:
       fonts:
         - asset: assets/fonts/MechanixIcons.ttf
 
-icon_font_generator:
-  from: assets/icons/svg
-  out_font: assets/fonts/MechanixIcons.ttf
-  out_flutter: lib/src/icons/mechanix_icons.dart
+icon_font:
+  input_svg_dir: assets/icons/svg
+  output_font_file: assets/fonts/MechanixIcons.ttf
+  output_class_file: lib/src/icons/mechanix_icons.dart
   class_name: MechanixIcons
-  font_family: MechanixIcons
+  font_name: MechanixIcons
   package: widgets
 
   # To add assets to your package, add an assets section, like this:
