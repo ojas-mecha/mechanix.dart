@@ -6,18 +6,15 @@
 // For more information about Flutter integration tests, please see
 // https://flutter.dev/to/integration-testing
 
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-
-import 'package:widgets/widgets.dart';
+import 'package:mechanix_widgets/mechanix_widgets.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('getPlatformVersion test', (WidgetTester tester) async {
-    final Widgets plugin = Widgets();
-    final String? version = await plugin.getPlatformVersion();
+    final String? version = await MechanixPlatform.getPlatformVersion();
     // The version string depends on the host platform running the test, so
     // just assert that some non-empty string is returned.
     expect(version?.isNotEmpty, true);
