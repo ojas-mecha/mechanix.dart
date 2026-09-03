@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
 
 /// Helper for constructing Material [ButtonStyle] configurations for [MechanixButton].
-abstract class MechanixButtonStyle {
-  const MechanixButtonStyle();
+abstract class ButtonStyleResolver {
+  const ButtonStyleResolver();
 
   /// Creates a Material [ButtonStyle] for [MechanixButton] using variant,
   /// type, sizing spec, theme data, and custom color overrides.
   static ButtonStyle createButtonStyle({
     required BuildContext context,
-    required MechanixButtonVariant variant,
-    required MechanixButtonType type,
-    required MechanixButtonSizeSpec sizeSpec,
-    MechanixButtonThemeData? theme,
+    required ButtonVariant variant,
+    required ButtonType type,
+    required ButtonSizeConfig sizeSpec,
+    ButtonThemeDataConfig? theme,
     Color? customBackgroundColor,
     Color? customHoverColor,
     Color? customPressedColor,
@@ -29,15 +29,17 @@ abstract class MechanixButtonStyle {
     bool showFocusIndicator = true,
   }) {
     final scheme = context.colorScheme;
-    final isOutline = variant == MechanixButtonVariant.outline;
+    final isOutline = variant == ButtonVariant.outline;
     final shapeTheme = context.shape;
 
     // 1. Shape resolution:
     // Custom theme.borderRadius -> ShapeTheme.full (rounded) -> ShapeTheme.none (square)
-    final borderRadius = theme?.borderRadius ?? switch (type) {
-      MechanixButtonType.square => shapeTheme.none,
-      MechanixButtonType.rounded => shapeTheme.full,
-    };
+    final borderRadius =
+        theme?.borderRadius ??
+        switch (type) {
+          ButtonType.square => shapeTheme.none,
+          ButtonType.rounded => shapeTheme.full,
+        };
     final shape = RoundedRectangleBorder(borderRadius: borderRadius);
 
     // 2. Color resolution pipeline:
@@ -65,7 +67,9 @@ abstract class MechanixButtonStyle {
         if (customPressedColor != null || theme?.pressedColor != null) {
           return customPressedColor ?? theme?.pressedColor;
         }
-        final layerColor = isOutline ? scheme.onSurfaceVariant : scheme.onPrimary;
+        final layerColor = isOutline
+            ? scheme.onSurfaceVariant
+            : scheme.onPrimary;
         return _applyStateLayer(
           baseColor: baseBg,
           stateLayerColor: layerColor,
@@ -76,7 +80,9 @@ abstract class MechanixButtonStyle {
         if (customHoverColor != null || theme?.hoverColor != null) {
           return customHoverColor ?? theme?.hoverColor;
         }
-        final layerColor = isOutline ? scheme.onSurfaceVariant : scheme.onPrimary;
+        final layerColor = isOutline
+            ? scheme.onSurfaceVariant
+            : scheme.onPrimary;
         return _applyStateLayer(
           baseColor: baseBg,
           stateLayerColor: layerColor,

@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-class MechanixButtonThemeData extends ThemeExtension<MechanixButtonThemeData>
+class ButtonThemeDataConfig extends ThemeExtension<ButtonThemeDataConfig>
     with Diagnosticable {
-  const MechanixButtonThemeData({
+  const ButtonThemeDataConfig({
     this.backgroundColor,
     this.hoverColor,
     this.pressedColor,
@@ -43,7 +43,7 @@ class MechanixButtonThemeData extends ThemeExtension<MechanixButtonThemeData>
   final double? focusIndicatorWidth;
 
   @override
-  MechanixButtonThemeData copyWith({
+  ButtonThemeDataConfig copyWith({
     Color? backgroundColor,
     Color? hoverColor,
     Color? pressedColor,
@@ -62,7 +62,7 @@ class MechanixButtonThemeData extends ThemeExtension<MechanixButtonThemeData>
     double? elevation,
     double? focusIndicatorWidth,
   }) {
-    return MechanixButtonThemeData(
+    return ButtonThemeDataConfig(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       hoverColor: hoverColor ?? this.hoverColor,
       pressedColor: pressedColor ?? this.pressedColor,
@@ -85,7 +85,7 @@ class MechanixButtonThemeData extends ThemeExtension<MechanixButtonThemeData>
     );
   }
 
-  MechanixButtonThemeData merge(MechanixButtonThemeData? other) {
+  ButtonThemeDataConfig merge(ButtonThemeDataConfig? other) {
     if (other == null) return this;
     return copyWith(
       backgroundColor: other.backgroundColor,
@@ -109,21 +109,32 @@ class MechanixButtonThemeData extends ThemeExtension<MechanixButtonThemeData>
   }
 
   @override
-  MechanixButtonThemeData lerp(
-      ThemeExtension<MechanixButtonThemeData>? other, double t) {
-    if (other is! MechanixButtonThemeData) return this;
-    return MechanixButtonThemeData(
+  ButtonThemeDataConfig lerp(
+    ThemeExtension<ButtonThemeDataConfig>? other,
+    double t,
+  ) {
+    if (other is! ButtonThemeDataConfig) return this;
+    return ButtonThemeDataConfig(
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       hoverColor: Color.lerp(hoverColor, other.hoverColor, t),
       pressedColor: Color.lerp(pressedColor, other.pressedColor, t),
       disabledColor: Color.lerp(disabledColor, other.disabledColor, t),
       foregroundColor: Color.lerp(foregroundColor, other.foregroundColor, t),
-      hoverForegroundColor:
-          Color.lerp(hoverForegroundColor, other.hoverForegroundColor, t),
-      pressedForegroundColor:
-          Color.lerp(pressedForegroundColor, other.pressedForegroundColor, t),
-      disabledForegroundColor:
-          Color.lerp(disabledForegroundColor, other.disabledForegroundColor, t),
+      hoverForegroundColor: Color.lerp(
+        hoverForegroundColor,
+        other.hoverForegroundColor,
+        t,
+      ),
+      pressedForegroundColor: Color.lerp(
+        pressedForegroundColor,
+        other.pressedForegroundColor,
+        t,
+      ),
+      disabledForegroundColor: Color.lerp(
+        disabledForegroundColor,
+        other.disabledForegroundColor,
+        t,
+      ),
       focusBorderColor: Color.lerp(focusBorderColor, other.focusBorderColor, t),
       borderColor: Color.lerp(borderColor, other.borderColor, t),
       borderWidth: lerpDouble(borderWidth, other.borderWidth, t),
@@ -132,8 +143,11 @@ class MechanixButtonThemeData extends ThemeExtension<MechanixButtonThemeData>
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t),
       borderRadius: BorderRadius.lerp(borderRadius, other.borderRadius, t),
       elevation: lerpDouble(elevation, other.elevation, t),
-      focusIndicatorWidth:
-          lerpDouble(focusIndicatorWidth, other.focusIndicatorWidth, t),
+      focusIndicatorWidth: lerpDouble(
+        focusIndicatorWidth,
+        other.focusIndicatorWidth,
+        t,
+      ),
     );
   }
 
@@ -150,12 +164,15 @@ class MechanixButtonThemeData extends ThemeExtension<MechanixButtonThemeData>
     properties.add(DiagnosticsProperty('pressedColor', pressedColor));
     properties.add(DiagnosticsProperty('disabledColor', disabledColor));
     properties.add(DiagnosticsProperty('foregroundColor', foregroundColor));
-    properties
-        .add(DiagnosticsProperty('hoverForegroundColor', hoverForegroundColor));
     properties.add(
-        DiagnosticsProperty('pressedForegroundColor', pressedForegroundColor));
-    properties.add(DiagnosticsProperty(
-        'disabledForegroundColor', disabledForegroundColor));
+      DiagnosticsProperty('hoverForegroundColor', hoverForegroundColor),
+    );
+    properties.add(
+      DiagnosticsProperty('pressedForegroundColor', pressedForegroundColor),
+    );
+    properties.add(
+      DiagnosticsProperty('disabledForegroundColor', disabledForegroundColor),
+    );
     properties.add(DiagnosticsProperty('focusBorderColor', focusBorderColor));
     properties.add(DiagnosticsProperty('borderColor', borderColor));
     properties.add(DiagnosticsProperty('borderWidth', borderWidth));
@@ -165,13 +182,14 @@ class MechanixButtonThemeData extends ThemeExtension<MechanixButtonThemeData>
     properties.add(DiagnosticsProperty('borderRadius', borderRadius));
     properties.add(DiagnosticsProperty('elevation', elevation));
     properties.add(
-        DiagnosticsProperty('focusIndicatorWidth', focusIndicatorWidth));
+      DiagnosticsProperty('focusIndicatorWidth', focusIndicatorWidth),
+    );
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is MechanixButtonThemeData &&
+    return other is ButtonThemeDataConfig &&
         backgroundColor == other.backgroundColor &&
         hoverColor == other.hoverColor &&
         pressedColor == other.pressedColor &&
@@ -222,14 +240,14 @@ class MechanixButtonTheme extends InheritedTheme {
     required super.child,
   });
 
-  final MechanixButtonThemeData data;
+  final ButtonThemeDataConfig data;
 
-  static MechanixButtonThemeData of(BuildContext context) {
-    final theme =
-        context.dependOnInheritedWidgetOfExactType<MechanixButtonTheme>();
+  static ButtonThemeDataConfig of(BuildContext context) {
+    final theme = context
+        .dependOnInheritedWidgetOfExactType<MechanixButtonTheme>();
     return theme?.data ??
-        Theme.of(context).extension<MechanixButtonThemeData>() ??
-        const MechanixButtonThemeData();
+        Theme.of(context).extension<ButtonThemeDataConfig>() ??
+        const ButtonThemeDataConfig();
   }
 
   @override

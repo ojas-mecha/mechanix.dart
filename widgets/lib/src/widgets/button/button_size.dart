@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'mechanix_button_enums.dart';
+import 'button_enums.dart';
 
 /// Resolved specifications (height, icon size, font size, padding, gaps, min tap target)
-/// corresponding to a given [MechanixButtonSize].
-class MechanixButtonSizeSpec {
+/// corresponding to a given [ButtonSize].
+class ButtonSizeConfig {
   final double height;
   final double iconSize;
   final TextStyle labelTextStyle;
@@ -11,7 +11,7 @@ class MechanixButtonSizeSpec {
   final double iconLabelGap;
   final double minTapTargetSize;
 
-  const MechanixButtonSizeSpec({
+  const ButtonSizeConfig({
     required this.height,
     required this.iconSize,
     required this.labelTextStyle,
@@ -20,15 +20,12 @@ class MechanixButtonSizeSpec {
     required this.minTapTargetSize,
   });
 
-  factory MechanixButtonSizeSpec.of(
-    BuildContext context,
-    MechanixButtonSize size,
-  ) {
+  factory ButtonSizeConfig.of(BuildContext context, ButtonSize size) {
     final textTheme = Theme.of(context).textTheme;
 
     switch (size) {
-      case MechanixButtonSize.xSmall:
-        return MechanixButtonSizeSpec(
+      case ButtonSize.xSmall:
+        return ButtonSizeConfig(
           height: 28,
           iconSize: 20,
           labelTextStyle: textTheme.labelLarge!,
@@ -37,8 +34,8 @@ class MechanixButtonSizeSpec {
           minTapTargetSize: 48,
         );
 
-      case MechanixButtonSize.small:
-        return MechanixButtonSizeSpec(
+      case ButtonSize.small:
+        return ButtonSizeConfig(
           height: 32,
           iconSize: 20,
           labelTextStyle: textTheme.labelLarge!,
@@ -47,8 +44,8 @@ class MechanixButtonSizeSpec {
           minTapTargetSize: 48,
         );
 
-      case MechanixButtonSize.medium:
-        return MechanixButtonSizeSpec(
+      case ButtonSize.medium:
+        return ButtonSizeConfig(
           height: 44,
           iconSize: 24,
           labelTextStyle: textTheme.titleMedium!,
@@ -57,8 +54,8 @@ class MechanixButtonSizeSpec {
           minTapTargetSize: 0,
         );
 
-      case MechanixButtonSize.large:
-        return MechanixButtonSizeSpec(
+      case ButtonSize.large:
+        return ButtonSizeConfig(
           height: 72,
           iconSize: 32,
           labelTextStyle: textTheme.headlineSmall!,
@@ -67,8 +64,8 @@ class MechanixButtonSizeSpec {
           minTapTargetSize: 0,
         );
 
-      case MechanixButtonSize.xLarge:
-        return MechanixButtonSizeSpec(
+      case ButtonSize.xLarge:
+        return ButtonSizeConfig(
           height: 100,
           iconSize: 40,
           labelTextStyle: textTheme.headlineLarge!,
@@ -80,9 +77,9 @@ class MechanixButtonSizeSpec {
   }
 }
 
-/// Extension on [MechanixButtonSize] for convenient access to its specifications.
-extension MechanixButtonSizeExtension on MechanixButtonSize {
-  MechanixButtonSizeSpec spec(BuildContext context) {
-    return MechanixButtonSizeSpec.of(context, this);
+/// Extension on [ButtonSize] for convenient access to its specifications.
+extension MechanixButtonSizeExtension on ButtonSize {
+  ButtonSizeConfig spec(BuildContext context) {
+    return ButtonSizeConfig.of(context, this);
   }
 }
