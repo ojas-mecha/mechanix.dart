@@ -92,26 +92,26 @@ class ButtonPreview extends StatelessWidget {
       _VariantTypeItem(
         title: 'Filled - Square',
         description: 'Solid background with square corners',
-        variant: MechanixButtonVariant.filled,
-        type: MechanixButtonType.square,
+        variant: ButtonVariant.filled,
+        type: ButtonType.square,
       ),
       _VariantTypeItem(
         title: 'Filled - Rounded',
         description: 'Solid background with rounded pill corners',
-        variant: MechanixButtonVariant.filled,
-        type: MechanixButtonType.rounded,
+        variant: ButtonVariant.filled,
+        type: ButtonType.rounded,
       ),
       _VariantTypeItem(
         title: 'Outline - Square',
         description: 'Outlined border with square corners',
-        variant: MechanixButtonVariant.outline,
-        type: MechanixButtonType.square,
+        variant: ButtonVariant.outline,
+        type: ButtonType.square,
       ),
       _VariantTypeItem(
         title: 'Outline - Rounded',
         description: 'Outlined border with rounded pill corners',
-        variant: MechanixButtonVariant.outline,
-        type: MechanixButtonType.rounded,
+        variant: ButtonVariant.outline,
+        type: ButtonType.rounded,
       ),
     ];
 
@@ -383,27 +383,15 @@ class ButtonPreview extends StatelessWidget {
 
     final sizes = [
       _SizeItem(
-        size: MechanixButtonSize.xSmall,
+        size: ButtonSize.xSmall,
         name: 'Extra Small',
         codeName: 'extraSmall',
       ),
+      _SizeItem(size: ButtonSize.small, name: 'Small', codeName: 'small'),
+      _SizeItem(size: ButtonSize.medium, name: 'Medium', codeName: 'medium'),
+      _SizeItem(size: ButtonSize.large, name: 'Large', codeName: 'large'),
       _SizeItem(
-        size: MechanixButtonSize.small,
-        name: 'Small',
-        codeName: 'small',
-      ),
-      _SizeItem(
-        size: MechanixButtonSize.medium,
-        name: 'Medium',
-        codeName: 'medium',
-      ),
-      _SizeItem(
-        size: MechanixButtonSize.large,
-        name: 'Large',
-        codeName: 'large',
-      ),
-      _SizeItem(
-        size: MechanixButtonSize.xLarge,
+        size: ButtonSize.xLarge,
         name: 'Extra Large',
         codeName: 'xLarge',
       ),
@@ -710,7 +698,7 @@ class ButtonPreview extends StatelessWidget {
               children: [
                 // Hug Content
                 Text(
-                  'Hug Content (widthSizing: MechanixButtonSizing.hug)',
+                  'Hug Content (widthSizing: ButtonLayoutSizing.hug)',
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
@@ -718,7 +706,7 @@ class ButtonPreview extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 MechanixButton(
-                  widthSizing: MechanixButtonSizing.hug,
+                  widthSizing: ButtonLayoutSizing.hug,
                   icon: Icons.fit_screen_rounded,
                   label: 'Hug Content',
                   onPressed: () {},
@@ -727,7 +715,7 @@ class ButtonPreview extends StatelessWidget {
 
                 // Fixed Width
                 Text(
-                  'Fixed Width (widthSizing: MechanixButtonSizing.fixed, width: 180)',
+                  'Fixed Width (widthSizing: ButtonLayoutSizing.fixed, width: 180)',
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
@@ -735,7 +723,7 @@ class ButtonPreview extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 MechanixButton(
-                  widthSizing: MechanixButtonSizing.fixed,
+                  widthSizing: ButtonLayoutSizing.fixed,
                   width: 180,
                   icon: Icons.straighten_rounded,
                   label: 'Fixed 180px',
@@ -745,7 +733,7 @@ class ButtonPreview extends StatelessWidget {
 
                 // Fill Available Width
                 Text(
-                  'Fill Width (widthSizing: MechanixButtonSizing.fill)',
+                  'Fill Width (widthSizing: ButtonLayoutSizing.fill)',
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
@@ -753,7 +741,7 @@ class ButtonPreview extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 MechanixButton(
-                  widthSizing: MechanixButtonSizing.fill,
+                  widthSizing: ButtonLayoutSizing.fill,
                   icon: Icons.fullscreen_rounded,
                   label: 'Full Width',
                   onPressed: () {},
@@ -792,8 +780,8 @@ class ButtonPreview extends StatelessWidget {
 class _VariantTypeItem {
   final String title;
   final String description;
-  final MechanixButtonVariant variant;
-  final MechanixButtonType type;
+  final ButtonVariant variant;
+  final ButtonType type;
 
   const _VariantTypeItem({
     required this.title,
@@ -804,7 +792,7 @@ class _VariantTypeItem {
 }
 
 class _SizeItem {
-  final MechanixButtonSize size;
+  final ButtonSize size;
   final String name;
   final String codeName;
 

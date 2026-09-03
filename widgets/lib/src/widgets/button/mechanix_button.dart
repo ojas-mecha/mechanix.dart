@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
-export 'mechanix_button_enums.dart';
-export 'mechanix_button_size.dart';
+export 'button_enums.dart';
+export 'button_size.dart';
 
 /// A highly customizable button component following the
 /// Mechanix design system specifications, wrapping Flutter Material's
@@ -15,11 +15,11 @@ class MechanixButton extends StatelessWidget {
     this.labelText,
     this.icon,
     this.showIcon = true,
-    this.type = MechanixButtonType.square,
-    this.variant = MechanixButtonVariant.filled,
-    this.size = MechanixButtonSize.medium,
-    this.widthSizing = MechanixButtonSizing.hug,
-    this.heightSizing = MechanixButtonSizing.hug,
+    this.type = ButtonType.square,
+    this.variant = ButtonVariant.filled,
+    this.size = ButtonSize.medium,
+    this.widthSizing = ButtonLayoutSizing.hug,
+    this.heightSizing = ButtonLayoutSizing.hug,
     this.width,
     this.height,
     this.showFocusIndicator = true,
@@ -50,10 +50,10 @@ class MechanixButton extends StatelessWidget {
     this.labelText,
     this.icon,
     this.showIcon = true,
-    this.type = MechanixButtonType.square,
-    this.size = MechanixButtonSize.medium,
-    this.widthSizing = MechanixButtonSizing.hug,
-    this.heightSizing = MechanixButtonSizing.hug,
+    this.type = ButtonType.square,
+    this.size = ButtonSize.medium,
+    this.widthSizing = ButtonLayoutSizing.hug,
+    this.heightSizing = ButtonLayoutSizing.hug,
     this.width,
     this.height,
     this.showFocusIndicator = true,
@@ -73,7 +73,7 @@ class MechanixButton extends StatelessWidget {
     this.borderWidth,
     this.focusBorderColor,
     this.theme,
-  }) : variant = MechanixButtonVariant.filled;
+  }) : variant = ButtonVariant.filled;
 
   /// Factory constructor for an Outline [MechanixButton].
   const MechanixButton.outline({
@@ -84,10 +84,10 @@ class MechanixButton extends StatelessWidget {
     this.labelText,
     this.icon,
     this.showIcon = true,
-    this.type = MechanixButtonType.square,
-    this.size = MechanixButtonSize.medium,
-    this.widthSizing = MechanixButtonSizing.hug,
-    this.heightSizing = MechanixButtonSizing.hug,
+    this.type = ButtonType.square,
+    this.size = ButtonSize.medium,
+    this.widthSizing = ButtonLayoutSizing.hug,
+    this.heightSizing = ButtonLayoutSizing.hug,
     this.width,
     this.height,
     this.showFocusIndicator = true,
@@ -107,7 +107,7 @@ class MechanixButton extends StatelessWidget {
     this.borderWidth,
     this.focusBorderColor,
     this.theme,
-  }) : variant = MechanixButtonVariant.outline;
+  }) : variant = ButtonVariant.outline;
 
   /// Alias constructor for an Outline [MechanixButton].
   const MechanixButton.outlined({
@@ -118,10 +118,10 @@ class MechanixButton extends StatelessWidget {
     this.labelText,
     this.icon,
     this.showIcon = true,
-    this.type = MechanixButtonType.square,
-    this.size = MechanixButtonSize.medium,
-    this.widthSizing = MechanixButtonSizing.hug,
-    this.heightSizing = MechanixButtonSizing.hug,
+    this.type = ButtonType.square,
+    this.size = ButtonSize.medium,
+    this.widthSizing = ButtonLayoutSizing.hug,
+    this.heightSizing = ButtonLayoutSizing.hug,
     this.width,
     this.height,
     this.showFocusIndicator = true,
@@ -141,7 +141,7 @@ class MechanixButton extends StatelessWidget {
     this.borderWidth,
     this.focusBorderColor,
     this.theme,
-  }) : variant = MechanixButtonVariant.outline;
+  }) : variant = ButtonVariant.outline;
 
   /// Callback when button is clicked. If null, button is disabled.
   final VoidCallback? onPressed;
@@ -161,20 +161,20 @@ class MechanixButton extends StatelessWidget {
   /// Controls whether the icon should be displayed. Defaults to true.
   final bool showIcon;
 
-  /// Corner/shape style type ([MechanixButtonType.square], [rounded]).
-  final MechanixButtonType type;
+  /// Corner/shape style type ([ButtonType.square], [rounded]).
+  final ButtonType type;
 
-  /// Visual style variant ([MechanixButtonVariant.filled], [outline]).
-  final MechanixButtonVariant variant;
+  /// Visual style variant ([ButtonVariant.filled], [outline]).
+  final ButtonVariant variant;
 
-  /// Button scale size ([MechanixButtonSize.xSmall], [small], [medium], [large], [xLarge]).
-  final MechanixButtonSize size;
+  /// Button scale size ([ButtonSize.xSmall], [small], [medium], [large], [xLarge]).
+  final ButtonSize size;
 
   /// Width sizing strategy (hug, fill, fixed).
-  final MechanixButtonSizing widthSizing;
+  final ButtonLayoutSizing widthSizing;
 
   /// Height sizing strategy (hug, fill, fixed).
-  final MechanixButtonSizing heightSizing;
+  final ButtonLayoutSizing heightSizing;
 
   /// Explicit width when [widthSizing] is fixed.
   final double? width;
@@ -215,22 +215,22 @@ class MechanixButton extends StatelessWidget {
   final Color? focusBorderColor;
 
   /// Custom theme override for this button instance.
-  final MechanixButtonThemeData? theme;
+  final ButtonThemeDataConfig? theme;
 
   bool get isEnabled => onPressed != null || onLongPress != null;
 
   (double?, double?) _resolveDimensions(double defaultHeight) {
     double? resolvedWidth;
-    if (widthSizing == MechanixButtonSizing.fill) {
+    if (widthSizing == ButtonLayoutSizing.fill) {
       resolvedWidth = double.infinity;
-    } else if (widthSizing == MechanixButtonSizing.fixed) {
+    } else if (widthSizing == ButtonLayoutSizing.fixed) {
       resolvedWidth = width;
     }
 
     double? resolvedHeight;
-    if (heightSizing == MechanixButtonSizing.fill) {
+    if (heightSizing == ButtonLayoutSizing.fill) {
       resolvedHeight = double.infinity;
-    } else if (heightSizing == MechanixButtonSizing.fixed) {
+    } else if (heightSizing == ButtonLayoutSizing.fixed) {
       resolvedHeight = height;
     } else {
       resolvedHeight = height ?? defaultHeight;
@@ -244,7 +244,7 @@ class MechanixButton extends StatelessWidget {
     final mergedTheme = MechanixButtonTheme.of(context).merge(theme);
     final sizeSpec = size.spec(context);
 
-    final buttonStyle = MechanixButtonStyle.createButtonStyle(
+    final buttonStyle = ButtonStyleResolver.createButtonStyle(
       context: context,
       variant: variant,
       type: type,
@@ -272,7 +272,7 @@ class MechanixButton extends StatelessWidget {
 
     Widget buttonWidget;
     switch (variant) {
-      case MechanixButtonVariant.filled:
+      case ButtonVariant.filled:
         buttonWidget = FilledButton(
           onPressed: onPressed,
           onLongPress: onLongPress,
@@ -282,7 +282,7 @@ class MechanixButton extends StatelessWidget {
           child: buttonChild,
         );
         break;
-      case MechanixButtonVariant.outline:
+      case ButtonVariant.outline:
         buttonWidget = OutlinedButton(
           onPressed: onPressed,
           onLongPress: onLongPress,
@@ -317,17 +317,17 @@ class MechanixButton extends StatelessWidget {
             minHeight: sizeSpec.minTapTargetSize,
           ),
           child: Center(
-            widthFactor: widthSizing == MechanixButtonSizing.hug ? 1.0 : null,
-            heightFactor: heightSizing == MechanixButtonSizing.hug ? 1.0 : null,
+            widthFactor: widthSizing == ButtonLayoutSizing.hug ? 1.0 : null,
+            heightFactor: heightSizing == ButtonLayoutSizing.hug ? 1.0 : null,
             child: resultWidget,
           ),
         ),
       );
-    } else if (widthSizing == MechanixButtonSizing.hug ||
-        heightSizing == MechanixButtonSizing.hug) {
+    } else if (widthSizing == ButtonLayoutSizing.hug ||
+        heightSizing == ButtonLayoutSizing.hug) {
       resultWidget = Center(
-        widthFactor: widthSizing == MechanixButtonSizing.hug ? 1.0 : null,
-        heightFactor: heightSizing == MechanixButtonSizing.hug ? 1.0 : null,
+        widthFactor: widthSizing == ButtonLayoutSizing.hug ? 1.0 : null,
+        heightFactor: heightSizing == ButtonLayoutSizing.hug ? 1.0 : null,
         child: resultWidget,
       );
     }
@@ -337,8 +337,8 @@ class MechanixButton extends StatelessWidget {
 
   Widget _buildContent(
     BuildContext context,
-    MechanixButtonThemeData theme,
-    MechanixButtonSizeSpec sizeSpec,
+    ButtonThemeDataConfig theme,
+    ButtonSizeConfig sizeSpec,
   ) {
     final iconWidget = _buildIcon(theme, sizeSpec);
     final textWidget = _buildText(context, theme, sizeSpec);
@@ -365,10 +365,7 @@ class MechanixButton extends StatelessWidget {
     );
   }
 
-  Widget? _buildIcon(
-    MechanixButtonThemeData theme,
-    MechanixButtonSizeSpec sizeSpec,
-  ) {
+  Widget? _buildIcon(ButtonThemeDataConfig theme, ButtonSizeConfig sizeSpec) {
     if (!showIcon || icon == null) return null;
 
     if (icon is Widget) {
@@ -381,8 +378,8 @@ class MechanixButton extends StatelessWidget {
 
   Widget? _buildText(
     BuildContext context,
-    MechanixButtonThemeData theme,
-    MechanixButtonSizeSpec sizeSpec,
+    ButtonThemeDataConfig theme,
+    ButtonSizeConfig sizeSpec,
   ) {
     if (labelText != null) {
       return labelText;
@@ -390,10 +387,7 @@ class MechanixButton extends StatelessWidget {
     if (label != null) {
       final baseStyle = theme.textStyle ?? sizeSpec.labelTextStyle;
       final defaultColor = DefaultTextStyle.of(context).style.color;
-      return Text(
-        label!,
-        style: baseStyle.copyWith(color: defaultColor),
-      );
+      return Text(label!, style: baseStyle.copyWith(color: defaultColor));
     }
     return null;
   }

@@ -17,7 +17,7 @@ export 'src/extensions/build_context.dart';
 
 // Components & Widgets
 export 'src/widgets/button/mechanix_button.dart';
-export 'src/widgets/button/mechanix_button_enums.dart';
-export 'src/widgets/button/mechanix_button_size.dart';
-export 'src/widgets/button/mechanix_button_style.dart';
-export 'src/widgets/button/mechanix_button_theme.dart';
+export 'src/widgets/button/button_enums.dart';
+export 'src/widgets/button/button_size.dart';
+export 'src/widgets/button/button_style.dart';
+export 'src/widgets/button/button_theme.dart';

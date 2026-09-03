@@ -1,5 +1,5 @@
 /// Defines the shape variant of the [MechanixButton].
-enum MechanixButtonType {
+enum ButtonType {
   /// Sharp / minimal corner radius (Square corners)
   square,
 
@@ -8,7 +8,7 @@ enum MechanixButtonType {
 }
 
 /// Defines the visual style variant of the [MechanixButton].
-enum MechanixButtonVariant {
+enum ButtonVariant {
   /// Filled background button style.
   filled,
 
@@ -17,10 +17,10 @@ enum MechanixButtonVariant {
 }
 
 /// Defines the pre-set sizing scale of the [MechanixButton].
-enum MechanixButtonSize { xSmall, small, medium, large, xLarge }
+enum ButtonSize { xSmall, small, medium, large, xLarge }
 
 /// Sizing strategy for width or height layout.
-enum MechanixButtonSizing {
+enum ButtonLayoutSizing {
   /// Hug / fit content tightly based on label and icon.
   hug,
 
