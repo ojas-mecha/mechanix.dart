@@ -4,3 +4,6 @@ library;
 
 // Icons
 export 'src/icons/mechanix_icons.dart';
+
+// Theme & Typography
+export 'src/theme/mechanix_typography.dart';
