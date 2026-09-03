@@ -107,9 +107,7 @@ abstract class MechanixButtonStyle {
           return customDisabledForegroundColor ??
               theme?.disabledForegroundColor;
         }
-        return isOutline
-            ? scheme.onSurface.withValues(alpha: 0.38)
-            : scheme.onSurface.withValues(alpha: 0.10);
+        return scheme.onSurface.withValues(alpha: 0.38);
       }
       if (states.contains(WidgetState.pressed)) {
         if (customPressedForegroundColor != null ||
@@ -171,7 +169,7 @@ abstract class MechanixButtonStyle {
       padding: WidgetStateProperty.all(theme?.padding ?? sizeSpec.padding),
       minimumSize: WidgetStateProperty.all(Size.zero),
       textStyle: WidgetStateProperty.all(
-        theme?.textStyle ?? sizeSpec.labelTextStyle,
+        (theme?.textStyle ?? sizeSpec.labelTextStyle).copyWith(color: null),
       ),
       iconSize: WidgetStateProperty.all(theme?.iconSize ?? sizeSpec.iconSize),
       animationDuration: duration ?? const Duration(milliseconds: 200),

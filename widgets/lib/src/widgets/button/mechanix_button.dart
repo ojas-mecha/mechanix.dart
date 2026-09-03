@@ -266,7 +266,9 @@ class MechanixButton extends StatelessWidget {
       showFocusIndicator: showFocusIndicator,
     );
 
-    final content = _buildContent(mergedTheme, sizeSpec);
+    final buttonChild = Builder(
+      builder: (context) => _buildContent(context, mergedTheme, sizeSpec),
+    );
 
     Widget buttonWidget;
     switch (variant) {
@@ -277,7 +279,7 @@ class MechanixButton extends StatelessWidget {
           focusNode: focusNode,
           autofocus: autofocus,
           style: buttonStyle,
-          child: content,
+          child: buttonChild,
         );
         break;
       case MechanixButtonVariant.outline:
@@ -287,7 +289,7 @@ class MechanixButton extends StatelessWidget {
           focusNode: focusNode,
           autofocus: autofocus,
           style: buttonStyle,
-          child: content,
+          child: buttonChild,
         );
         break;
     }
@@ -334,11 +336,12 @@ class MechanixButton extends StatelessWidget {
   }
 
   Widget _buildContent(
+    BuildContext context,
     MechanixButtonThemeData theme,
     MechanixButtonSizeSpec sizeSpec,
   ) {
     final iconWidget = _buildIcon(theme, sizeSpec);
-    final textWidget = _buildText(theme, sizeSpec);
+    final textWidget = _buildText(context, theme, sizeSpec);
 
     final children = <Widget>[];
 
@@ -377,6 +380,7 @@ class MechanixButton extends StatelessWidget {
   }
 
   Widget? _buildText(
+    BuildContext context,
     MechanixButtonThemeData theme,
     MechanixButtonSizeSpec sizeSpec,
   ) {
@@ -384,7 +388,12 @@ class MechanixButton extends StatelessWidget {
       return labelText;
     }
     if (label != null) {
-      return Text(label!, style: theme.textStyle ?? sizeSpec.labelTextStyle);
+      final baseStyle = theme.textStyle ?? sizeSpec.labelTextStyle;
+      final defaultColor = DefaultTextStyle.of(context).style.color;
+      return Text(
+        label!,
+        style: baseStyle.copyWith(color: defaultColor),
+      );
     }
     return null;
   }
