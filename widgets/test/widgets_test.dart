@@ -13,6 +13,14 @@ void main() {
       expect(theme.titleLarge, isNotNull);
       expect(theme.bodyLarge, isNotNull);
       expect(theme.labelLarge, isNotNull);
+      expect(MechanixTheme.light, isA<ThemeData>());
+      expect(MechanixTheme.dark, isA<ThemeData>());
+      expect(MechanixColors.lightColorScheme, isA<ColorScheme>());
+      expect(MechanixColors.darkColorScheme, isA<ColorScheme>());
+      expect(
+        const MechanixTheme(child: SizedBox()),
+        isA<MechanixThemeScope>(),
+      );
     },
   );
 }

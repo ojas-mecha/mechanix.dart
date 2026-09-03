@@ -6,4 +6,6 @@ library;
 export 'src/icons/mechanix_icons.dart';
 
 // Theme & Typography
+export 'src/theme/mechanix_colors.dart';
+export 'src/theme/mechanix_theme.dart';
 export 'src/theme/mechanix_typography.dart';
