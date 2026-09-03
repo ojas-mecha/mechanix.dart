@@ -9,3 +9,15 @@ export 'src/icons/mechanix_icons.dart';
 export 'src/theme/mechanix_colors.dart';
 export 'src/theme/mechanix_theme.dart';
 export 'src/theme/mechanix_typography.dart';
+export 'src/theme/shape_theme.dart';
+
+// Extensions
+export 'src/extensions/shape_extension.dart';
+export 'src/extensions/build_context.dart';
+
+// Components & Widgets
+export 'src/widgets/button/mechanix_button.dart';
+export 'src/widgets/button/mechanix_button_enums.dart';
+export 'src/widgets/button/mechanix_button_size.dart';
+export 'src/widgets/button/mechanix_button_style.dart';
+export 'src/widgets/button/mechanix_button_theme.dart';
