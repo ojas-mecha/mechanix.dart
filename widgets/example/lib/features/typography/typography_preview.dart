@@ -118,6 +118,7 @@ class TypographyPreview extends StatelessWidget {
     );
   }
 
+  /*
   Widget _buildAboutCard(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
@@ -233,6 +234,7 @@ class TypographyPreview extends StatelessWidget {
       ],
     );
   }
+  */
 
   Widget _buildGroupSection(BuildContext context, _TypographyGroup group) {
     final theme = Theme.of(context);
@@ -282,7 +284,8 @@ class TypographyPreview extends StatelessWidget {
     final isDesktop = MediaQuery.sizeOf(context).width >= 900;
 
     // Derived metadata
-    final fontFamily = style?.fontFamily ?? 'Default';
+    // final rawFamily = style?.fontFamily ?? 'Default';
+    // final fontFamily = rawFamily.replaceFirst('packages/widgets/', '');
     final fontSize = style?.fontSize != null
         ? '${style!.fontSize!.toStringAsFixed(0)}px'
         : 'Default';
@@ -301,7 +304,8 @@ class TypographyPreview extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        _buildMetaItem('Font Family', fontFamily, colorScheme),
+        // _buildMetaItem('Font Family', fontFamily, colorScheme),
+        _buildMetaItem('Font Family', '', colorScheme),
         const SizedBox(height: 3),
         _buildMetaItem('Size', fontSize, colorScheme),
         const SizedBox(height: 3),

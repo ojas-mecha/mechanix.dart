@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Default font family for Mechanix apps.
-const String mechanixFontFamily = 'Sora';
+const String mechanixFontFamily = 'SpaceGrotesk';
 
 TextTheme createTextTheme({
   required Color textColor,

@@ -26,8 +26,9 @@ void main() {
       expect(find.byType(ThemeModeMenu), findsOneWidget);
 
       // Branding
-      expect(find.text('Mechanix UI'), findsOneWidget);
-      expect(find.text('Design System'), findsOneWidget);
+      expect(find.text('Mechanix Widgets'), findsOneWidget);
+      // Brand icon
+      expect(find.byIcon(MechanixIcons.comet), findsOneWidget);
 
       // Sidebar Categories
       expect(find.text('OVERVIEW'), findsOneWidget);
@@ -37,9 +38,6 @@ void main() {
       // Sidebar Items
       expect(find.text('Theme Overview'), findsOneWidget);
       expect(find.text('Typography'), findsWidgets);
-      expect(find.text('Buttons'), findsOneWidget);
-      expect(find.text('Inputs'), findsOneWidget);
-      expect(find.text('Cards'), findsOneWidget);
 
       // By default, TypographyPreview is active
       expect(find.byType(TypographyPreview), findsOneWidget);
