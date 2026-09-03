@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/src/theme/shape_theme.dart';
+import 'package:widgets/src/foundation/shape/shape_theme.dart';
 
 extension ShapeExtension on BuildContext {
   ShapeTheme get shape {

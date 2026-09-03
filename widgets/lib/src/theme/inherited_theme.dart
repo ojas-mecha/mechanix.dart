@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'mechanix_colors.dart';
-import 'mechanix_theme.dart';
+import '../foundation/colors/colors.dart';
+import 'theme.dart';
 
 /// A reactive theme widget that provides Mechanix theme configurations to descendants.
 ///

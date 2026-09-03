@@ -174,7 +174,7 @@ abstract final class MechanixColors {
 
   /// Generates a light [ColorScheme] for Mechanix apps with the specified [accentColor].
   static ColorScheme createLightColorScheme({Color? accentColor}) {
-    if (accentColor == null) {
+    if (accentColor == null || accentColor == defaultAccentColor) {
       return lightColorScheme;
     }
     final seed = ColorScheme.fromSeed(
@@ -197,7 +197,7 @@ abstract final class MechanixColors {
 
   /// Generates a dark [ColorScheme] for Mechanix apps with the specified [accentColor].
   static ColorScheme createDarkColorScheme({Color? accentColor}) {
-    if (accentColor == null) {
+    if (accentColor == null || accentColor == defaultAccentColor) {
       return darkColorScheme;
     }
     final seed = ColorScheme.fromSeed(

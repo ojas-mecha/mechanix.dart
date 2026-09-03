@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:example/features/components/button_preview.dart';
-import 'package:widgets/widgets.dart';
 
 void main() {
   group('ButtonPreview Widget Tests', () {

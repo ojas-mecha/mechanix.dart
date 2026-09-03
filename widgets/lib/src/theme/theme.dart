@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
 
 export 'inherited_theme.dart';
-export 'mechanix_theme_data.dart';
+export 'theme_data.dart';
 
 /// The Mechanix theme definitions and reactive theme widget factory.
 ///

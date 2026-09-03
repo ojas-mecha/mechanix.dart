@@ -7,6 +7,7 @@ void main() {
     'Mechanix public symbols are exported from package:widgets/widgets.dart',
     () {
       expect(MechanixIcons.caretLeft, isNotNull);
+      expect(MechanixSpacing.medium, equals(16.0));
       final theme = createTextTheme(textColor: const Color(0xFF000000));
       expect(theme.displayLarge, isNotNull);
       expect(theme.headlineLarge, isNotNull);
@@ -20,6 +21,10 @@ void main() {
       expect(
         const MechanixTheme(child: SizedBox()),
         isA<MechanixThemeScope>(),
+      );
+      expect(
+        MechanixButton(label: 'Test', onPressed: () {}),
+        isA<MechanixButton>(),
       );
     },
   );

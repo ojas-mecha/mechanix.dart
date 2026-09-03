@@ -45,7 +45,7 @@ flutter:
 icon_font:
   input_svg_dir: assets/icons/svg
   output_font_file: assets/fonts/MechanixIcons.ttf
-  output_class_file: lib/src/icons/mechanix_icons.dart
+  output_class_file: lib/src/icons/icons.dart
   class_name: MechanixIcons
   font_name: MechanixIcons
   package: widgets
