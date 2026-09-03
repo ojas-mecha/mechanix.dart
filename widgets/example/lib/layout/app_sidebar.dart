@@ -105,27 +105,12 @@ class AppSidebar extends StatelessWidget {
 
               // COMPONENTS
               _buildCategoryHeader(context, 'COMPONENTS'),
-              // _buildNavItem(
-              //   context,
-              //   id: 'buttons',
-              //   title: 'Buttons',
-              //   icon: Icons.smart_button_outlined,
-              //   isComingSoon: true,
-              // ),
-              // _buildNavItem(
-              //   context,
-              //   id: 'inputs',
-              //   title: 'Inputs',
-              //   icon: Icons.input_rounded,
-              //   isComingSoon: true,
-              // ),
-              // _buildNavItem(
-              //   context,
-              //   id: 'cards',
-              //   title: 'Cards',
-              //   icon: Icons.dashboard_customize_outlined,
-              //   isComingSoon: true,
-              // ),
+              _buildNavItem(
+                context,
+                id: 'buttons',
+                title: 'Buttons',
+                icon: Icons.smart_button_outlined,
+              ),
             ],
           ),
         ),

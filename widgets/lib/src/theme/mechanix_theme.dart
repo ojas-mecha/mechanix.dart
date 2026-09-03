@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'inherited_theme.dart';
-import 'mechanix_colors.dart';
-import 'mechanix_theme_data.dart';
-import 'mechanix_typography.dart';
+import 'package:widgets/widgets.dart';
 
 export 'inherited_theme.dart';
 export 'mechanix_theme_data.dart';
@@ -69,6 +65,106 @@ abstract class MechanixTheme extends StatefulWidget {
       useMaterial3: true,
       colorScheme: colorScheme,
       textTheme: createTextTheme(textColor: colorScheme.onSurface),
+      filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+          mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return SystemMouseCursors.basic;
+            }
+
+            return SystemMouseCursors.click;
+          }),
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return colorScheme.onSurface.withValues(alpha: 0.10);
+            }
+            if (states.contains(WidgetState.pressed)) {
+              return Color.alphaBlend(
+                colorScheme.onPrimary.withValues(alpha: 0.12),
+                colorScheme.secondaryFixedDim,
+              );
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return Color.alphaBlend(
+                colorScheme.onPrimary.withValues(alpha: 0.08),
+                colorScheme.secondaryFixedDim,
+              );
+            }
+            return colorScheme.secondaryFixedDim;
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return colorScheme.onSurface.withValues(alpha: 0.10);
+            }
+            return colorScheme.onPrimary;
+          }),
+          iconColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return colorScheme.onSurface.withValues(alpha: 0.10);
+            }
+            return colorScheme.onPrimary;
+          }),
+          // splashFactory: const TouchOptimizedSplashFactory(),
+          animationDuration: const Duration(milliseconds: 200),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return SystemMouseCursors.basic;
+            }
+
+            return SystemMouseCursors.click;
+          }),
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return Colors.transparent;
+            }
+            if (states.contains(WidgetState.pressed)) {
+              return Color.alphaBlend(
+                colorScheme.onSurfaceVariant.withValues(alpha: 0.12),
+                Colors.transparent,
+              );
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return Color.alphaBlend(
+                colorScheme.onSurfaceVariant.withValues(alpha: 0.08),
+                Colors.transparent,
+              );
+            }
+            return Colors.transparent;
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return colorScheme.onSurface.withValues(alpha: 0.38);
+            }
+            return colorScheme.onSurface;
+          }),
+          iconColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return colorScheme.onSurface.withValues(alpha: 0.38);
+            }
+            return colorScheme.onSurface;
+          }),
+          side: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return BorderSide(
+                color: colorScheme.onSurface.withValues(alpha: 0.10),
+                width: 1.0,
+              );
+            }
+            if (states.contains(WidgetState.focused)) {
+              return BorderSide(color: colorScheme.outline, width: 3.0);
+            }
+            return BorderSide(color: colorScheme.outline, width: 1.0);
+          }),
+          // splashFactory: const TouchOptimizedSplashFactory(),
+          animationDuration: const Duration(milliseconds: 200),
+        ),
+      ),
     );
   }
 
