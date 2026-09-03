@@ -30,42 +30,44 @@ abstract class MechanixButtonStyle {
   }) {
     final scheme = context.colorScheme;
     final isOutline = variant == MechanixButtonVariant.outline;
+    final shapeTheme = context.shape;
 
-    final borderRadius = switch (type) {
-      MechanixButtonType.square =>
-        theme?.borderRadius ?? BorderRadius.circular(0),
-      MechanixButtonType.rounded =>
-        theme?.borderRadius ?? BorderRadius.circular(sizeSpec.height / 2),
+    // 1. Shape resolution:
+    // Custom theme.borderRadius -> ShapeTheme.full (rounded) -> ShapeTheme.none (square)
+    final borderRadius = theme?.borderRadius ?? switch (type) {
+      MechanixButtonType.square => shapeTheme.none,
+      MechanixButtonType.rounded => shapeTheme.full,
     };
-
     final shape = RoundedRectangleBorder(borderRadius: borderRadius);
 
-    final baseBg = customBackgroundColor ?? theme?.backgroundColor;
-    final baseFg = customForegroundColor ?? theme?.foregroundColor;
+    // 2. Color resolution pipeline:
+    // Instance Override -> Scoped Theme -> Theme ColorScheme default
+    final defaultBg = isOutline ? Colors.transparent : scheme.secondaryFixedDim;
+    final defaultFg = isOutline ? scheme.onSurface : scheme.onPrimary;
+
+    final baseBg = customBackgroundColor ?? theme?.backgroundColor ?? defaultBg;
+    final baseFg = customForegroundColor ?? theme?.foregroundColor ?? defaultFg;
     final baseBorderColor = customBorderColor ?? theme?.borderColor;
     final baseBorderWidth = customBorderWidth ?? theme?.borderWidth;
 
+    // 3. State-aware background
     final backgroundColorProperty = WidgetStateProperty.resolveWith<Color?>((
       states,
     ) {
       if (states.contains(WidgetState.disabled)) {
-        if (customDisabledColor != null || theme?.disabledColor != null) {
-          return customDisabledColor ?? theme?.disabledColor;
-        }
-        return isOutline
-            ? Colors.transparent
-            : scheme.onSurface.withValues(alpha: 0.10);
+        return customDisabledColor ??
+            theme?.disabledColor ??
+            (isOutline
+                ? Colors.transparent
+                : scheme.onSurface.withValues(alpha: 0.10));
       }
       if (states.contains(WidgetState.pressed)) {
         if (customPressedColor != null || theme?.pressedColor != null) {
           return customPressedColor ?? theme?.pressedColor;
         }
-        final bg =
-            baseBg ??
-            (isOutline ? Colors.transparent : scheme.secondaryFixedDim);
-        final layerColor = isOutline ? scheme.primary : scheme.onPrimary;
+        final layerColor = isOutline ? scheme.onSurfaceVariant : scheme.onPrimary;
         return _applyStateLayer(
-          baseColor: bg,
+          baseColor: baseBg,
           stateLayerColor: layerColor,
           opacity: 0.12,
         );
@@ -74,23 +76,17 @@ abstract class MechanixButtonStyle {
         if (customHoverColor != null || theme?.hoverColor != null) {
           return customHoverColor ?? theme?.hoverColor;
         }
-        final bg =
-            baseBg ??
-            (isOutline ? Colors.transparent : scheme.secondaryFixedDim);
-        final layerColor = isOutline ? scheme.primary : scheme.onPrimary;
+        final layerColor = isOutline ? scheme.onSurfaceVariant : scheme.onPrimary;
         return _applyStateLayer(
-          baseColor: bg,
+          baseColor: baseBg,
           stateLayerColor: layerColor,
           opacity: 0.08,
         );
       }
       if (states.contains(WidgetState.focused)) {
-        final bg =
-            baseBg ??
-            (isOutline ? Colors.transparent : scheme.secondaryFixedDim);
-        final layerColor = isOutline ? scheme.primary : scheme.outline;
+        final layerColor = isOutline ? Colors.transparent : scheme.onPrimary;
         return _applyStateLayer(
-          baseColor: bg,
+          baseColor: baseBg,
           stateLayerColor: layerColor,
           opacity: 0.12,
         );
@@ -98,32 +94,29 @@ abstract class MechanixButtonStyle {
       return baseBg;
     });
 
+    // 4. State-aware foreground
     final foregroundColorProperty = WidgetStateProperty.resolveWith<Color?>((
       states,
     ) {
       if (states.contains(WidgetState.disabled)) {
-        if (customDisabledForegroundColor != null ||
-            theme?.disabledForegroundColor != null) {
-          return customDisabledForegroundColor ??
-              theme?.disabledForegroundColor;
-        }
-        return scheme.onSurface.withValues(alpha: 0.38);
+        return customDisabledForegroundColor ??
+            theme?.disabledForegroundColor ??
+            scheme.onSurface.withValues(alpha: 0.38);
       }
       if (states.contains(WidgetState.pressed)) {
-        if (customPressedForegroundColor != null ||
-            theme?.pressedForegroundColor != null) {
-          return customPressedForegroundColor ?? theme?.pressedForegroundColor;
-        }
+        return customPressedForegroundColor ??
+            theme?.pressedForegroundColor ??
+            baseFg;
       }
       if (states.contains(WidgetState.hovered)) {
-        if (customHoverForegroundColor != null ||
-            theme?.hoverForegroundColor != null) {
-          return customHoverForegroundColor ?? theme?.hoverForegroundColor;
-        }
+        return customHoverForegroundColor ??
+            theme?.hoverForegroundColor ??
+            baseFg;
       }
       return baseFg;
     });
 
+    // 5. State-aware border side
     final sideProperty = WidgetStateProperty.resolveWith<BorderSide?>((states) {
       if (isOutline) {
         final w = baseBorderWidth ?? 1.0;
@@ -159,6 +152,11 @@ abstract class MechanixButtonStyle {
       }
     });
 
+    // 6. Native tap target sizing
+    final tapTargetSize = sizeSpec.minTapTargetSize > 0
+        ? MaterialTapTargetSize.padded
+        : MaterialTapTargetSize.shrinkWrap;
+
     return ButtonStyle(
       overlayColor: WidgetStateProperty.all(Colors.transparent),
       backgroundColor: backgroundColorProperty,
@@ -167,13 +165,22 @@ abstract class MechanixButtonStyle {
       side: sideProperty,
       shape: WidgetStateProperty.all(shape),
       padding: WidgetStateProperty.all(theme?.padding ?? sizeSpec.padding),
-      minimumSize: WidgetStateProperty.all(Size.zero),
+      minimumSize: WidgetStateProperty.all(Size(0, sizeSpec.height)),
+      fixedSize: WidgetStateProperty.all(Size.fromHeight(sizeSpec.height)),
+      alignment: Alignment.center,
+      elevation: WidgetStateProperty.all(theme?.elevation ?? 0.0),
       textStyle: WidgetStateProperty.all(
         (theme?.textStyle ?? sizeSpec.labelTextStyle).copyWith(color: null),
       ),
       iconSize: WidgetStateProperty.all(theme?.iconSize ?? sizeSpec.iconSize),
       animationDuration: duration ?? const Duration(milliseconds: 200),
-      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      tapTargetSize: tapTargetSize,
+      mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return SystemMouseCursors.basic;
+        }
+        return SystemMouseCursors.click;
+      }),
     );
   }
 }
