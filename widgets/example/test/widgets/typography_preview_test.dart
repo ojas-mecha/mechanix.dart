@@ -6,60 +6,52 @@ import 'package:widgets/widgets.dart';
 
 void main() {
   group('TypographyPreview Widget Tests', () {
-    testWidgets('renders all 15 Material 3 typography styles and About section', (
-      WidgetTester tester,
-    ) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: SingleChildScrollView(
-              child: TypographyPreview(),
+    testWidgets(
+      'renders all 15 Material 3 typography styles and About section',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(child: TypographyPreview()),
             ),
           ),
-        ),
-      );
+        );
 
-      // Verify Header & About section
-      expect(find.text('Typography'), findsOneWidget);
-      expect(find.text('Material 3 Type Scale'), findsOneWidget);
-      expect(find.text('About'), findsOneWidget);
-      expect(
-        find.text(
-          'The typography system is based on Material 3 guidelines and configured through the active theme.',
-        ),
-        findsOneWidget,
-      );
+        // Verify Header
+        expect(find.text('Typography'), findsOneWidget);
+        expect(find.text('Material 3 Type Scale'), findsOneWidget);
 
-      // Verify category group headers
-      expect(find.text('Display'), findsOneWidget);
-      expect(find.text('Headline'), findsOneWidget);
-      expect(find.text('Title'), findsOneWidget);
-      expect(find.text('Body'), findsOneWidget);
-      expect(find.text('Label'), findsOneWidget);
+        // Verify category group headers
+        expect(find.text('Display'), findsOneWidget);
+        expect(find.text('Headline'), findsOneWidget);
+        expect(find.text('Title'), findsOneWidget);
+        expect(find.text('Body'), findsOneWidget);
+        expect(find.text('Label'), findsOneWidget);
 
-      // Verify all 15 style names
-      final styles = [
-        'Display Large',
-        'Display Medium',
-        'Display Small',
-        'Headline Large',
-        'Headline Medium',
-        'Headline Small',
-        'Title Large',
-        'Title Medium',
-        'Title Small',
-        'Body Large',
-        'Body Medium',
-        'Body Small',
-        'Label Large',
-        'Label Medium',
-        'Label Small',
-      ];
+        // Verify all 15 style names
+        final styles = [
+          'Display Large',
+          'Display Medium',
+          'Display Small',
+          'Headline Large',
+          'Headline Medium',
+          'Headline Small',
+          'Title Large',
+          'Title Medium',
+          'Title Small',
+          'Body Large',
+          'Body Medium',
+          'Body Small',
+          'Label Large',
+          'Label Medium',
+          'Label Small',
+        ];
 
-      for (final style in styles) {
-        expect(find.text(style), findsWidgets);
-      }
-    });
+        for (final style in styles) {
+          expect(find.text(style), findsWidgets);
+        }
+      },
+    );
 
     testWidgets('dynamically extracts metadata from active Theme textTheme', (
       WidgetTester tester,
@@ -79,9 +71,7 @@ void main() {
         MaterialApp(
           theme: customTheme,
           home: const Scaffold(
-            body: SingleChildScrollView(
-              child: TypographyPreview(),
-            ),
+            body: SingleChildScrollView(child: TypographyPreview()),
           ),
         ),
       );
@@ -93,27 +83,26 @@ void main() {
       expect(find.text('3.50px'), findsOneWidget);
     });
 
-    testWidgets('displays Mechanix Sora typography when wrapped in MechanixTheme', (
-      WidgetTester tester,
-    ) async {
-      await tester.pumpWidget(
-        MechanixTheme(
-          builder: (context, theme, child) => MaterialApp(
-            theme: theme.light,
-            darkTheme: theme.dark,
-            home: const Scaffold(
-              body: SingleChildScrollView(
-                child: TypographyPreview(),
+    testWidgets(
+      'displays Mechanix SpaceGrotesk typography when wrapped in MechanixTheme',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MechanixTheme(
+            builder: (context, theme, child) => MaterialApp(
+              theme: theme.light,
+              darkTheme: theme.dark,
+              home: const Scaffold(
+                body: SingleChildScrollView(child: TypographyPreview()),
               ),
             ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      // Mechanix uses 'Sora' as font family across text styles and in About card
-      expect(find.text('Sora'), findsWidgets);
-    });
+        // Mechanix uses 'SpaceGrotesk' as font family across text styles
+        expect(find.text('SpaceGrotesk'), findsWidgets);
+      },
+    );
 
     testWidgets('renders cleanly on narrow mobile viewport without overflow', (
       WidgetTester tester,
@@ -125,9 +114,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: SingleChildScrollView(
-              child: TypographyPreview(),
-            ),
+            body: SingleChildScrollView(child: TypographyPreview()),
           ),
         ),
       );

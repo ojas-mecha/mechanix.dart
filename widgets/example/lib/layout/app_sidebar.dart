@@ -41,13 +41,10 @@ class AppSidebar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Center(
-                  child: Text(
-                    'M',
-                    style: TextStyle(
-                      color: theme.colorScheme.onPrimary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
+                  child: Icon(
+                    MechanixIcons.comet,
+                    color: theme.colorScheme.onPrimary,
+                    size: 30,
                   ),
                 ),
               ),
@@ -57,7 +54,7 @@ class AppSidebar extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Mechanix UI',
+                      'Mechanix Widgets',
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),

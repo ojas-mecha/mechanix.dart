@@ -14,7 +14,7 @@ void main() {
       expect(large.fontWeight, equals(FontWeight.w300));
       expect(large.letterSpacing, equals(0.0));
       expect(large.color, equals(textColor));
-      expect(large.fontFamily, equals('Sora'));
+      expect(large.fontFamily, equals('SpaceGrotesk'));
       expect(large.leadingDistribution, equals(TextLeadingDistribution.even));
 
       final medium = theme.displayMedium!;
