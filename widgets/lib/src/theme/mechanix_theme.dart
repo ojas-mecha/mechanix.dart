@@ -67,6 +67,13 @@ abstract class MechanixTheme extends StatefulWidget {
       textTheme: createTextTheme(textColor: colorScheme.onSurface),
       filledButtonTheme: FilledButtonThemeData(
         style: ButtonStyle(
+          mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return SystemMouseCursors.basic;
+            }
+
+            return SystemMouseCursors.click;
+          }),
           overlayColor: WidgetStateProperty.all(Colors.transparent),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
@@ -104,6 +111,13 @@ abstract class MechanixTheme extends StatefulWidget {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
+          mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return SystemMouseCursors.basic;
+            }
+
+            return SystemMouseCursors.click;
+          }),
           overlayColor: WidgetStateProperty.all(Colors.transparent),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
@@ -111,13 +125,13 @@ abstract class MechanixTheme extends StatefulWidget {
             }
             if (states.contains(WidgetState.pressed)) {
               return Color.alphaBlend(
-                colorScheme.primary.withValues(alpha: 0.12),
+                colorScheme.onSurfaceVariant.withValues(alpha: 0.12),
                 Colors.transparent,
               );
             }
             if (states.contains(WidgetState.hovered)) {
               return Color.alphaBlend(
-                colorScheme.primary.withValues(alpha: 0.08),
+                colorScheme.onSurfaceVariant.withValues(alpha: 0.08),
                 Colors.transparent,
               );
             }

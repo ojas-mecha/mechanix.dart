@@ -17,13 +17,7 @@ enum MechanixButtonVariant {
 }
 
 /// Defines the pre-set sizing scale of the [MechanixButton].
-enum MechanixButtonSize {
-  extraSmall,
-  small,
-  medium,
-  large,
-  xLarge,
-}
+enum MechanixButtonSize { xSmall, small, medium, large, xLarge }
 
 /// Sizing strategy for width or height layout.
 enum MechanixButtonSizing {
@@ -36,4 +30,3 @@ enum MechanixButtonSizing {
   /// Fixed explicitly provided dimension value.
   fixed,
 }
-

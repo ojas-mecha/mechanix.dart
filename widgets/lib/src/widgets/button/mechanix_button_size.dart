@@ -27,7 +27,7 @@ class MechanixButtonSizeSpec {
     final textTheme = Theme.of(context).textTheme;
 
     switch (size) {
-      case MechanixButtonSize.extraSmall:
+      case MechanixButtonSize.xSmall:
         return MechanixButtonSizeSpec(
           height: 28,
           iconSize: 20,

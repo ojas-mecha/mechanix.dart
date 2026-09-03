@@ -167,7 +167,7 @@ class MechanixButton extends StatelessWidget {
   /// Visual style variant ([MechanixButtonVariant.filled], [outline]).
   final MechanixButtonVariant variant;
 
-  /// Button scale size ([MechanixButtonSize.extraSmall], [small], [medium], [large], [xLarge]).
+  /// Button scale size ([MechanixButtonSize.xSmall], [small], [medium], [large], [xLarge]).
   final MechanixButtonSize size;
 
   /// Width sizing strategy (hug, fill, fixed).
@@ -304,15 +304,24 @@ class MechanixButton extends StatelessWidget {
       );
     }
 
-    resultWidget = ConstrainedBox(
-      constraints: BoxConstraints(
-        minWidth: sizeSpec.minTapTargetSize,
-        minHeight: sizeSpec.minTapTargetSize,
-      ),
-      child: resultWidget,
-    );
-
-    if (widthSizing == MechanixButtonSizing.hug ||
+    if (sizeSpec.minTapTargetSize > 0) {
+      resultWidget = GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: onPressed,
+        onLongPress: onLongPress,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: sizeSpec.minTapTargetSize,
+            minHeight: sizeSpec.minTapTargetSize,
+          ),
+          child: Center(
+            widthFactor: widthSizing == MechanixButtonSizing.hug ? 1.0 : null,
+            heightFactor: heightSizing == MechanixButtonSizing.hug ? 1.0 : null,
+            child: resultWidget,
+          ),
+        ),
+      );
+    } else if (widthSizing == MechanixButtonSizing.hug ||
         heightSizing == MechanixButtonSizing.hug) {
       resultWidget = Center(
         widthFactor: widthSizing == MechanixButtonSizing.hug ? 1.0 : null,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
 
+import '../features/components/button_preview.dart';
 import '../features/theme/theme_preview.dart';
 import '../features/typography/typography_preview.dart';
 import 'app_sidebar.dart';
@@ -130,6 +131,9 @@ class _MainContent extends StatelessWidget {
     switch (section) {
       case 'typography':
         content = const TypographyPreview();
+        break;
+      case 'buttons':
+        content = const ButtonPreview();
         break;
       case 'theme':
         content = const ThemePreview();

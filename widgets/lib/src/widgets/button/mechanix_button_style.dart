@@ -169,14 +169,13 @@ abstract class MechanixButtonStyle {
       side: sideProperty,
       shape: WidgetStateProperty.all(shape),
       padding: WidgetStateProperty.all(theme?.padding ?? sizeSpec.padding),
-      minimumSize: WidgetStateProperty.all(
-        Size(sizeSpec.minTapTargetSize, sizeSpec.minTapTargetSize),
-      ),
+      minimumSize: WidgetStateProperty.all(Size.zero),
       textStyle: WidgetStateProperty.all(
         theme?.textStyle ?? sizeSpec.labelTextStyle,
       ),
       iconSize: WidgetStateProperty.all(theme?.iconSize ?? sizeSpec.iconSize),
       animationDuration: duration ?? const Duration(milliseconds: 200),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 }
