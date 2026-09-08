@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
 
 import '../features/components/button_preview.dart';
+import '../features/components/text_field_preview.dart';
 import '../features/theme/theme_preview.dart';
 import '../features/typography/typography_preview.dart';
 import 'app_sidebar.dart';
@@ -107,6 +108,8 @@ class _AppShellState extends State<AppShell> {
         return 'Theme Overview';
       case 'buttons':
         return 'Buttons';
+      case 'text_fields':
+        return 'Text Fields';
       case 'inputs':
         return 'Inputs';
       case 'cards':
@@ -134,6 +137,9 @@ class _MainContent extends StatelessWidget {
         break;
       case 'buttons':
         content = const ButtonPreview();
+        break;
+      case 'text_fields':
+        content = const TextFieldPreview();
         break;
       case 'theme':
         content = const ThemePreview();
