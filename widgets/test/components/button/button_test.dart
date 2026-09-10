@@ -11,15 +11,15 @@ void main() {
             body: Column(
               children: [
                 MechanixButton.filled(
-                  label: 'Filled Button',
+                  labelText: 'Filled Button',
                   onPressed: () {},
                 ),
                 MechanixButton.outline(
-                  label: 'Outline Button',
+                  labelText: 'Outline Button',
                   onPressed: () {},
                 ),
                 MechanixButton.text(
-                  label: 'Text Button',
+                  labelText: 'Text Button',
                   onPressed: () {},
                 ),
               ],
@@ -42,7 +42,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: MechanixButton.text(
-              label: 'Tap Me',
+              labelText: 'Tap Me',
               onPressed: () => tapped = true,
             ),
           ),
@@ -60,11 +60,11 @@ void main() {
             body: Column(
               children: [
                 MechanixButton.filled(
-                  label: 'Disabled Filled',
+                  labelText: 'Disabled Filled',
                   onPressed: null,
                 ),
                 MechanixButton.text(
-                  label: 'Disabled Text',
+                  labelText: 'Disabled Text',
                   onPressed: null,
                 ),
               ],
@@ -86,7 +86,7 @@ void main() {
           theme: MechanixTheme.light,
           home: Scaffold(
             body: MechanixButton.text(
-              label: 'Hover Test',
+              labelText: 'Hover Test',
               onPressed: () {},
             ),
           ),
@@ -108,5 +108,61 @@ void main() {
       expect(style.foregroundColor?.resolve({WidgetState.focused}), lightScheme.onSurface);
       expect(style.foregroundColor?.resolve({WidgetState.hovered}), lightScheme.onSecondaryContainer);
     });
+
+    testWidgets('supports labelText string and custom label widget (with label taking precedence)', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Column(
+              children: [
+                MechanixButton.filled(
+                  labelText: 'String Label',
+                  onPressed: () {},
+                ),
+                MechanixButton.filled(
+                  label: const Text('Widget Label'),
+                  onPressed: () {},
+                ),
+                MechanixButton.filled(
+                  labelText: 'Ignored Text',
+                  label: const Text('Overriding Widget'),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('String Label'), findsOneWidget);
+      expect(find.text('Widget Label'), findsOneWidget);
+      expect(find.text('Overriding Widget'), findsOneWidget);
+      expect(find.text('Ignored Text'), findsNothing);
+    });
+
+    testWidgets('adapts to text scaling without overflow in hug sizing', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MediaQuery(
+            data: const MediaQueryData(textScaler: TextScaler.linear(2.5)),
+            child: Scaffold(
+              body: MechanixButton.filled(
+                size: ButtonSize.xSmall,
+                labelText: 'Scaled Button Text',
+                onPressed: () {},
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(tester.takeException(), isNull);
+      expect(find.text('Scaled Button Text'), findsOneWidget);
+
+      final buttonRenderBox = tester.renderObject<RenderBox>(find.byType(MechanixButton));
+      // xSmall base height is 28, with 2.5x scaling it expands naturally without overflow
+      expect(buttonRenderBox.size.height, greaterThan(28.0));
+    });
   });
 }
+

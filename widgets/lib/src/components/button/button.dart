@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
+
 export 'button_enums.dart';
 export 'button_size.dart';
 
@@ -183,11 +184,11 @@ class MechanixButton extends StatelessWidget {
   /// Callback when button is long pressed.
   final VoidCallback? onLongPress;
 
-  /// String label text.
-  final String? label;
-
   /// Custom Widget label text (overrides [label] string if provided).
-  final Widget? labelText;
+  final String? labelText;
+
+  /// String label text.
+  final Widget? label;
 
   /// Icon widget or IconData to display.
   final dynamic icon;
@@ -267,7 +268,7 @@ class MechanixButton extends StatelessWidget {
     } else if (heightSizing == ButtonLayoutSizing.fixed) {
       resolvedHeight = height;
     } else {
-      resolvedHeight = height ?? defaultHeight;
+      resolvedHeight = height;
     }
 
     return (resolvedWidth, resolvedHeight);
@@ -339,6 +340,9 @@ class MechanixButton extends StatelessWidget {
     }
 
     final (resolvedWidth, resolvedHeight) = _resolveDimensions(sizeSpec.height);
+    final minHeight = heightSizing == ButtonLayoutSizing.hug
+        ? (height ?? sizeSpec.height)
+        : null;
 
     Widget resultWidget = buttonWidget;
 
@@ -346,6 +350,11 @@ class MechanixButton extends StatelessWidget {
       resultWidget = SizedBox(
         width: resolvedWidth,
         height: resolvedHeight,
+        child: resultWidget,
+      );
+    } else if (minHeight != null) {
+      resultWidget = ConstrainedBox(
+        constraints: BoxConstraints(minHeight: minHeight),
         child: resultWidget,
       );
     }
@@ -398,7 +407,7 @@ class MechanixButton extends StatelessWidget {
     }
 
     if (textWidget != null) {
-      children.add(textWidget);
+      children.add(Flexible(child: textWidget));
     }
 
     return Row(
@@ -425,13 +434,18 @@ class MechanixButton extends StatelessWidget {
     ButtonThemeDataConfig theme,
     ButtonSizeConfig sizeSpec,
   ) {
-    if (labelText != null) {
-      return labelText;
-    }
     if (label != null) {
+      return label;
+    }
+    if (labelText != null) {
       final baseStyle = theme.textStyle ?? sizeSpec.labelTextStyle;
       final defaultColor = DefaultTextStyle.of(context).style.color;
-      return Text(label!, style: baseStyle.copyWith(color: defaultColor));
+      return Text(
+        labelText!,
+        style: baseStyle.copyWith(color: defaultColor),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      );
     }
     return null;
   }

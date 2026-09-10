@@ -65,22 +65,45 @@ class MechanixThemeScope extends StatefulWidget implements MechanixTheme {
 class _MechanixThemeScopeState extends State<MechanixThemeScope> {
   late ThemeMode _themeMode;
   Color? _accentColor;
+  late ThemeData _lightTheme;
+  late ThemeData _darkTheme;
+  MechanixThemeData? _cachedData;
+  Brightness? _cachedBrightness;
 
   @override
   void initState() {
     super.initState();
     _themeMode = widget.themeMode;
     _accentColor = widget.accentColor;
+    _updateThemes();
+  }
+
+  void _updateThemes() {
+    final lightColorScheme = MechanixColors.createLightColorScheme(
+      accentColor: _accentColor,
+    );
+    final darkColorScheme = MechanixColors.createDarkColorScheme(
+      accentColor: _accentColor,
+    );
+    _lightTheme = MechanixTheme.createTheme(colorScheme: lightColorScheme);
+    _darkTheme = MechanixTheme.createTheme(colorScheme: darkColorScheme);
+    _cachedData = null;
   }
 
   @override
   void didUpdateWidget(MechanixThemeScope oldWidget) {
     super.didUpdateWidget(oldWidget);
+    bool themesNeedUpdate = false;
     if (widget.themeMode != oldWidget.themeMode) {
       _themeMode = widget.themeMode;
+      _cachedData = null;
     }
     if (widget.accentColor != oldWidget.accentColor) {
       _accentColor = widget.accentColor;
+      themesNeedUpdate = true;
+    }
+    if (themesNeedUpdate) {
+      _updateThemes();
     }
   }
 
@@ -88,6 +111,7 @@ class _MechanixThemeScopeState extends State<MechanixThemeScope> {
     if (_themeMode != mode) {
       setState(() {
         _themeMode = mode;
+        _cachedData = null;
       });
     }
   }
@@ -96,6 +120,7 @@ class _MechanixThemeScopeState extends State<MechanixThemeScope> {
     if (_accentColor != color) {
       setState(() {
         _accentColor = color;
+        _updateThemes();
       });
     }
   }
@@ -113,25 +138,21 @@ class _MechanixThemeScopeState extends State<MechanixThemeScope> {
   }
 
   MechanixThemeData _resolveData(BuildContext context) {
-    final lightColorScheme = MechanixColors.createLightColorScheme(
-      accentColor: _accentColor,
-    );
-    final darkColorScheme = MechanixColors.createDarkColorScheme(
-      accentColor: _accentColor,
-    );
-    final lightTheme = MechanixTheme.createTheme(colorScheme: lightColorScheme);
-    final darkTheme = MechanixTheme.createTheme(colorScheme: darkColorScheme);
     final activeBrightness = _resolveBrightness(context);
-
-    return MechanixThemeData(
+    if (_cachedData != null && _cachedBrightness == activeBrightness) {
+      return _cachedData!;
+    }
+    _cachedBrightness = activeBrightness;
+    _cachedData = MechanixThemeData(
       accentColor: _accentColor,
       themeMode: _themeMode,
-      light: lightTheme,
-      dark: darkTheme,
+      light: _lightTheme,
+      dark: _darkTheme,
       activeBrightness: activeBrightness,
       onThemeModeChanged: _setThemeMode,
       onAccentColorChanged: _setAccentColor,
     );
+    return _cachedData!;
   }
 
   @override

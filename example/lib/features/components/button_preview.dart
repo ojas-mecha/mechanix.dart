@@ -175,13 +175,13 @@ class ButtonPreview extends StatelessWidget {
           variant: item.variant,
           type: item.type,
           icon: Icons.add_rounded,
-          label: 'Button',
+          labelText: 'Button',
           onPressed: () {},
         ),
         MechanixButton(
           variant: item.variant,
           type: item.type,
-          label: 'Text Only',
+          labelText: 'Text Only',
           onPressed: () {},
         ),
       ],
@@ -300,7 +300,7 @@ class ButtonPreview extends StatelessWidget {
                         const SizedBox(height: 6),
                         MechanixButton(
                           icon: Icons.check_circle_outline_rounded,
-                          label: 'Enabled',
+                          labelText: 'Enabled',
                           onPressed: () {},
                         ),
                       ],
@@ -317,7 +317,7 @@ class ButtonPreview extends StatelessWidget {
                         const SizedBox(height: 6),
                         const MechanixButton(
                           icon: Icons.block_rounded,
-                          label: 'Disabled',
+                          labelText: 'Disabled',
                           onPressed: null,
                         ),
                       ],
@@ -334,7 +334,7 @@ class ButtonPreview extends StatelessWidget {
                         const SizedBox(height: 6),
                         const MechanixButton.outline(
                           icon: Icons.block_rounded,
-                          label: 'Disabled',
+                          labelText: 'Disabled',
                           onPressed: null,
                         ),
                       ],
@@ -351,7 +351,7 @@ class ButtonPreview extends StatelessWidget {
                         const SizedBox(height: 6),
                         const MechanixButton.text(
                           icon: Icons.block_rounded,
-                          label: 'Disabled',
+                          labelText: 'Disabled',
                           onPressed: null,
                         ),
                       ],
@@ -382,7 +382,7 @@ class ButtonPreview extends StatelessWidget {
                     // Danger / Error
                     MechanixButton(
                       icon: Icons.delete_forever_rounded,
-                      label: 'Delete',
+                      labelText: 'Delete',
                       backgroundColor: colorScheme.error,
                       foregroundColor: colorScheme.onError,
                       onPressed: () {},
@@ -390,7 +390,7 @@ class ButtonPreview extends StatelessWidget {
                     // Custom Accent / Positive
                     MechanixButton(
                       icon: Icons.check_rounded,
-                      label: 'Save',
+                      labelText: 'Save',
                       backgroundColor: const Color(0xFF2E7D32),
                       foregroundColor: Colors.white,
                       onPressed: () {},
@@ -417,7 +417,11 @@ class ButtonPreview extends StatelessWidget {
         codeName: 'extraSmall',
       ),
       _SizeItem(size: ButtonSize.small, name: 'Small', codeName: 'small'),
-      _SizeItem(size: ButtonSize.medium, name: 'Medium', codeName: 'medium'),
+      _SizeItem(
+        size: ButtonSize.medium,
+        name: 'Medium (Default)',
+        codeName: 'medium',
+      ),
       _SizeItem(size: ButtonSize.large, name: 'Large', codeName: 'large'),
       _SizeItem(
         size: ButtonSize.xLarge,
@@ -494,13 +498,13 @@ class ButtonPreview extends StatelessWidget {
         MechanixButton(
           size: item.size,
           icon: Icons.rocket_launch_rounded,
-          label: 'Button',
+          labelText: 'Button',
           onPressed: () {},
         ),
         MechanixButton.outline(
           size: item.size,
           icon: Icons.rocket_launch_rounded,
-          label: 'Outline',
+          labelText: 'Outline',
           onPressed: () {},
         ),
       ],
@@ -632,14 +636,14 @@ class ButtonPreview extends StatelessWidget {
                   title: 'Icon + Text Label',
                   button: MechanixButton(
                     icon: Icons.send_rounded,
-                    label: 'Send',
+                    labelText: 'Send',
                     onPressed: () {},
                   ),
                 ),
                 _buildContentSampleBox(
                   context,
                   title: 'Text Label Only',
-                  button: MechanixButton(label: 'Continue', onPressed: () {}),
+                  button: MechanixButton(labelText: 'Continue', onPressed: () {}),
                 ),
                 _buildContentSampleBox(
                   context,
@@ -654,7 +658,7 @@ class ButtonPreview extends StatelessWidget {
                   title: 'Custom Label Widget',
                   button: MechanixButton(
                     icon: Icons.cloud_upload_rounded,
-                    labelText: const Row(
+                    label: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text('Upload'),
@@ -737,7 +741,7 @@ class ButtonPreview extends StatelessWidget {
                 MechanixButton(
                   widthSizing: ButtonLayoutSizing.hug,
                   icon: Icons.fit_screen_rounded,
-                  label: 'Hug Content',
+                  labelText: 'Hug Content',
                   onPressed: () {},
                 ),
                 const SizedBox(height: 20),
@@ -755,7 +759,7 @@ class ButtonPreview extends StatelessWidget {
                   widthSizing: ButtonLayoutSizing.fixed,
                   width: 180,
                   icon: Icons.straighten_rounded,
-                  label: 'Fixed 180px',
+                  labelText: 'Fixed 180px',
                   onPressed: () {},
                 ),
                 const SizedBox(height: 20),
@@ -772,7 +776,7 @@ class ButtonPreview extends StatelessWidget {
                 MechanixButton(
                   widthSizing: ButtonLayoutSizing.fill,
                   icon: Icons.fullscreen_rounded,
-                  label: 'Full Width',
+                  labelText: 'Full Width',
                   onPressed: () {},
                 ),
               ],

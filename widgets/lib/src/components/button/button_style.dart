@@ -207,7 +207,6 @@ abstract class ButtonStyleResolver {
       shape: WidgetStateProperty.all(shape),
       padding: WidgetStateProperty.all(theme?.padding ?? sizeSpec.padding),
       minimumSize: WidgetStateProperty.all(Size(0, sizeSpec.height)),
-      fixedSize: WidgetStateProperty.all(Size.fromHeight(sizeSpec.height)),
       alignment: Alignment.center,
       elevation: WidgetStateProperty.all(theme?.elevation ?? 0.0),
       textStyle: WidgetStateProperty.all(

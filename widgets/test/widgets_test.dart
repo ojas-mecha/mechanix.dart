@@ -20,7 +20,7 @@ void main() {
       expect(MechanixColors.darkColorScheme, isA<ColorScheme>());
       expect(const MechanixTheme(child: SizedBox()), isA<MechanixThemeScope>());
       expect(
-        MechanixButton(label: 'Test', onPressed: () {}),
+        MechanixButton(labelText: 'Test', onPressed: () {}),
         isA<MechanixButton>(),
       );
       expect(
