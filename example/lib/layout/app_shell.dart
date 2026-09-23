@@ -245,7 +245,6 @@ class _MainContent extends StatelessWidget {
           ),
         );
     }
-    ;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
