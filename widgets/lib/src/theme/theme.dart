@@ -3,6 +3,7 @@ import 'package:widgets/widgets.dart';
 
 export 'inherited_theme.dart';
 export 'theme_data.dart';
+export 'touch_splash_factory.dart';
 
 /// The Mechanix theme definitions and reactive theme widget factory.
 ///
@@ -77,15 +78,30 @@ abstract class MechanixTheme extends StatefulWidget {
       fontFamily: fontFamily,
       textTheme: textTheme,
       appBarTheme: appBarTheme,
+      splashFactory: const TouchOptimizedSplashFactory(),
+      splashColor: colorScheme.onSurface.withValues(alpha: 0.12),
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
+          splashFactory: const TouchOptimizedSplashFactory(),
           mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
             if (states.contains(WidgetState.disabled)) {
               return SystemMouseCursors.basic;
             }
             return SystemMouseCursors.click;
           }),
-          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return Colors.transparent;
+            }
+            if (states.contains(WidgetState.pressed)) {
+              return colorScheme.onPrimary.withValues(alpha: 0.12);
+            }
+            if (states.contains(WidgetState.hovered) ||
+                states.contains(WidgetState.focused)) {
+              return colorScheme.onPrimary.withValues(alpha: 0.08);
+            }
+            return Colors.transparent;
+          }),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
               return colorScheme.onSurface.withValues(alpha: 0.10);
@@ -128,6 +144,7 @@ abstract class MechanixTheme extends StatefulWidget {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: ButtonStyle(
+          splashFactory: const TouchOptimizedSplashFactory(),
           mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
             if (states.contains(WidgetState.disabled)) {
               return SystemMouseCursors.basic;
@@ -135,7 +152,19 @@ abstract class MechanixTheme extends StatefulWidget {
 
             return SystemMouseCursors.click;
           }),
-          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return Colors.transparent;
+            }
+            if (states.contains(WidgetState.pressed)) {
+              return colorScheme.onPrimary.withValues(alpha: 0.12);
+            }
+            if (states.contains(WidgetState.hovered) ||
+                states.contains(WidgetState.focused)) {
+              return colorScheme.onPrimary.withValues(alpha: 0.08);
+            }
+            return Colors.transparent;
+          }),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
               return colorScheme.onSurface.withValues(alpha: 0.10);
@@ -166,12 +195,12 @@ abstract class MechanixTheme extends StatefulWidget {
             }
             return colorScheme.onPrimary;
           }),
-          // splashFactory: const TouchOptimizedSplashFactory(),
           animationDuration: const Duration(milliseconds: 200),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
+          splashFactory: const TouchOptimizedSplashFactory(),
           mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
             if (states.contains(WidgetState.disabled)) {
               return SystemMouseCursors.basic;
@@ -179,7 +208,19 @@ abstract class MechanixTheme extends StatefulWidget {
 
             return SystemMouseCursors.click;
           }),
-          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return Colors.transparent;
+            }
+            if (states.contains(WidgetState.pressed)) {
+              return colorScheme.onSurfaceVariant.withValues(alpha: 0.12);
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return colorScheme.onSurfaceVariant.withValues(alpha: 0.08);
+            }
+            return Colors.transparent;
+          }),
+          // backgroundColor: WidgetStateProperty.all(Colors.transparent),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
               return Colors.transparent;
@@ -222,7 +263,6 @@ abstract class MechanixTheme extends StatefulWidget {
             }
             return BorderSide(color: colorScheme.outline, width: 1.0);
           }),
-          // splashFactory: const TouchOptimizedSplashFactory(),
           animationDuration: const Duration(milliseconds: 200),
         ),
       ),
@@ -279,6 +319,7 @@ abstract class MechanixTheme extends StatefulWidget {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
+          splashFactory: const TouchOptimizedSplashFactory(),
           mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
             if (states.contains(WidgetState.disabled)) {
               return SystemMouseCursors.basic;
@@ -286,7 +327,18 @@ abstract class MechanixTheme extends StatefulWidget {
 
             return SystemMouseCursors.click;
           }),
-          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return Colors.transparent;
+            }
+            if (states.contains(WidgetState.pressed)) {
+              return colorScheme.onSurface.withValues(alpha: 0.12);
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return colorScheme.onSurface.withValues(alpha: 0.08);
+            }
+            return Colors.transparent;
+          }),
           backgroundColor: WidgetStateProperty.all(Colors.transparent),
           foregroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
@@ -312,19 +364,17 @@ abstract class MechanixTheme extends StatefulWidget {
             }
             return null;
           }),
-          // splashFactory: const TouchOptimizedSplashFactory(),
           animationDuration: const Duration(milliseconds: 200),
         ),
       ),
       checkboxTheme: _createCheckboxTheme(colorScheme),
       radioTheme: _createRadioTheme(colorScheme),
-      snackBarTheme: _createSnackBarTheme(
-        colorScheme,
-        createTextTheme(textColor: colorScheme.onSurface),
-      ),
+      snackBarTheme: _createSnackBarTheme(colorScheme, textTheme),
+      navigationBarTheme: _createNavigationBarTheme(colorScheme, textTheme),
       bottomSheetTheme: _createBottomSheetTheme(colorScheme, shapeTheme),
       dividerTheme: _createDividerTheme(colorScheme),
       badgeTheme: _createBadgeTheme(colorScheme, textTheme),
+      listTileTheme: _createListTileTheme(colorScheme),
       extensions: [
         shapeTheme,
         AppBarThemeDataConfig.standard(colorScheme, textTheme),
@@ -336,6 +386,7 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
         ButtonThemeDataConfig(),
         IconButtonThemeDataConfig(),
+        const FloatingActionButtonThemeDataConfig(),
         SwitchThemeDataConfig(
           trackColor: WidgetStatePropertyAll(colorScheme.secondaryFixedDim),
           handleColor: WidgetStateProperty.resolveWith((states) {
@@ -388,6 +439,12 @@ abstract class MechanixTheme extends StatefulWidget {
           focusBorderColor: WidgetStatePropertyAll(colorScheme.outline),
           focusBorderWidth: 1.0,
         ),
+        NavigationBarThemeDataConfig.standard(colorScheme, textTheme),
+        ListTileThemeDataConfig(
+          focusBorderColor: colorScheme.outline,
+          focusBorderWidth: 3.0,
+          showFocusIndicator: true,
+        ),
       ],
     );
   }
@@ -411,6 +468,44 @@ abstract class MechanixTheme extends StatefulWidget {
       titleTextStyle: config.smallTitleTextStyle,
       iconTheme: config.iconTheme,
       actionsIconTheme: config.actionsIconTheme,
+    );
+  }
+
+  /// Creates a [NavigationBarThemeData] configured with Mechanix specifications.
+  static NavigationBarThemeData _createNavigationBarTheme(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    return NavigationBarThemeData(
+      height: 80.0,
+      backgroundColor: colorScheme.surface,
+      elevation: 0.0,
+      shadowColor: colorScheme.shadow,
+      surfaceTintColor: Colors.transparent,
+      indicatorColor: colorScheme.onSurface.withValues(alpha: 0.10),
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        final style = textTheme.labelLarge?.copyWith(
+          color: colorScheme.onSecondaryContainer,
+        );
+        if (states.contains(WidgetState.disabled)) {
+          return style?.copyWith(
+            color: colorScheme.onSecondaryContainer.withValues(alpha: 0.38),
+          );
+        }
+        return style;
+      }),
+      iconTheme: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return IconThemeData(
+            size: 24.0,
+            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.38),
+          );
+        }
+        if (states.contains(WidgetState.selected)) {
+          return IconThemeData(size: 24.0, color: colorScheme.onSurface);
+        }
+        return IconThemeData(size: 24.0, color: colorScheme.onSurfaceVariant);
+      }),
     );
   }
 
@@ -547,7 +642,26 @@ abstract class MechanixTheme extends StatefulWidget {
         }
         return BorderSide(width: 2.0, color: colorScheme.onSurfaceVariant);
       }),
-      overlayColor: WidgetStateProperty.all(Colors.transparent),
+      overlayColor: WidgetStateProperty.resolveWith<Color>((states) {
+        if (states.contains(WidgetState.selected)) {
+          if (states.contains(WidgetState.pressed) ||
+              states.contains(WidgetState.focused)) {
+            return colorScheme.primary.withValues(alpha: 0.12);
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return colorScheme.primary.withValues(alpha: 0.08);
+          }
+          return Colors.transparent;
+        }
+        if (states.contains(WidgetState.pressed) ||
+            states.contains(WidgetState.focused)) {
+          return colorScheme.onSurface.withValues(alpha: 0.12);
+        }
+        if (states.contains(WidgetState.hovered)) {
+          return colorScheme.onSurface.withValues(alpha: 0.08);
+        }
+        return Colors.transparent;
+      }),
       splashRadius: 20.0,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.standard,
@@ -580,9 +694,48 @@ abstract class MechanixTheme extends StatefulWidget {
         }
         return colorScheme.onSurfaceVariant;
       }),
-      overlayColor: WidgetStateProperty.all(Colors.transparent),
+      overlayColor: WidgetStateProperty.resolveWith<Color>((states) {
+        if (states.contains(WidgetState.selected)) {
+          if (states.contains(WidgetState.pressed) ||
+              states.contains(WidgetState.focused)) {
+            return colorScheme.primary.withValues(alpha: 0.12);
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return colorScheme.primary.withValues(alpha: 0.08);
+          }
+          return Colors.transparent;
+        }
+        if (states.contains(WidgetState.pressed) ||
+            states.contains(WidgetState.focused)) {
+          return colorScheme.onSurface.withValues(alpha: 0.12);
+        }
+        if (states.contains(WidgetState.hovered)) {
+          return colorScheme.onSurface.withValues(alpha: 0.08);
+        }
+        return Colors.transparent;
+      }),
       splashRadius: 20.0,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.standard,
+    );
+  }
+
+  /// Creates a [ListTileThemeData] configured with Mechanix specifications.
+  static ListTileThemeData _createListTileTheme(ColorScheme colorScheme) {
+    return ListTileThemeData(
+      mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return SystemMouseCursors.basic;
+        }
+        return SystemMouseCursors.click;
+      }),
+      tileColor: Colors.transparent,
+      selectedTileColor: colorScheme.primary.withValues(alpha: 0.12),
+      iconColor: colorScheme.onSurface,
+      textColor: colorScheme.onSurface,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      horizontalTitleGap: 8.0,
+      minVerticalPadding: 8.0,
       visualDensity: VisualDensity.standard,
     );
   }
