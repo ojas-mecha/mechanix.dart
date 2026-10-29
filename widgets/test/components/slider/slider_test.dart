@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -75,6 +77,15 @@ bool Function(Symbol, List<dynamic>) _rectColored(Color color) =>
     (method, args) =>
         method == #drawRect &&
         (args[1] as Paint).color.toARGB32() == color.toARGB32();
+
+/// Matches a `drawRawPoints` run of ticks, optionally with exactly [count]
+/// ticks and with [color], skipping any other paint calls before it.
+bool Function(Symbol, List<dynamic>) _ticks({int? count, Color? color}) =>
+    (method, args) =>
+        method == #drawRawPoints &&
+        (count == null || (args[1] as Float32List).length == count * 4) &&
+        (color == null ||
+            (args[2] as Paint).color.toARGB32() == color.toARGB32());
 
 /// Presses the center of the slider so its pointer is painted.
 Future<TestGesture> _press(WidgetTester tester) async {
@@ -315,32 +326,33 @@ void main() {
   });
 
   group('MechanixSlider Rendering Tests', () {
-    testWidgets('value label is painted only while dragging', (tester) async {
+    testWidgets('value label is displayed only while dragging', (tester) async {
       await tester.pumpWidget(_harness(const _SliderHost(initial: 50)));
-      expect(tester.renderObject(_paint), isNot(paints..paragraph()));
+      expect(find.byType(Text), findsNothing);
 
       final rect = tester.getRect(find.byType(MechanixSlider));
       final gesture = await tester.startGesture(rect.center);
       await gesture.moveBy(const Offset(30, 0));
       await tester.pump();
-      expect(tester.renderObject(_paint), paints..paragraph());
+      expect(find.byType(Text), findsOneWidget);
 
       await gesture.up();
       await tester.pump();
-      expect(tester.renderObject(_paint), isNot(paints..paragraph()));
+      expect(find.byType(Text), findsNothing);
     });
 
-    testWidgets('showValueLabel false never paints the label', (tester) async {
+    testWidgets('showValueLabel false never displays the label', (tester) async {
       await tester.pumpWidget(
         _harness(
           MechanixSlider(value: 50, showValueLabel: false, onChanged: (_) {}),
         ),
       );
+      expect(find.byType(Text), findsNothing);
       final rect = tester.getRect(find.byType(MechanixSlider));
       final gesture = await tester.startGesture(rect.center);
       await gesture.moveBy(const Offset(30, 0));
       await tester.pump();
-      expect(tester.renderObject(_paint), isNot(paints..paragraph()));
+      expect(find.byType(Text), findsNothing);
       await gesture.up();
     });
 
@@ -351,27 +363,8 @@ void main() {
         _harness(MechanixSlider(value: 0, divisions: 4, onChanged: (_) {})),
       );
       // At rest: all 5 stops, no gap and no pointer.
-      expect(
-        tester.renderObject(_paint),
-        paints
-          ..rect()
-          ..rect()
-          ..rect()
-          ..rect()
-          ..rect(),
-      );
-      expect(
-        tester.renderObject(_paint),
-        isNot(
-          paints
-            ..rect()
-            ..rect()
-            ..rect()
-            ..rect()
-            ..rect()
-            ..rect(),
-        ),
-      );
+      expect(tester.renderObject(_paint), paints..something(_ticks(count: 5)));
+      expect(tester.renderObject(_paint), isNot(paints..rect()));
 
       final gesture = await tester.startGesture(
         tester.getRect(find.byType(MechanixSlider)).centerLeft,
@@ -381,25 +374,39 @@ void main() {
       expect(
         tester.renderObject(_paint),
         paints
-          ..rect()
-          ..rect()
-          ..rect()
-          ..rect()
+          ..something(_ticks(count: 4))
           ..rect(),
       );
       expect(
         tester.renderObject(_paint),
-        isNot(
-          paints
-            ..rect()
-            ..rect()
-            ..rect()
-            ..rect()
-            ..rect()
-            ..rect(),
-        ),
+        isNot(paints..something(_ticks(count: 5))),
       );
       await gesture.up();
+    });
+
+    testWidgets('at rest, the tick under the pointer is active', (
+      tester,
+    ) async {
+      final scheme = MechanixTheme.light.colorScheme;
+      await tester.pumpWidget(
+        _harness(MechanixSlider(value: 100, divisions: 4, onChanged: (_) {})),
+      );
+      // At the maximum every stop is filled, including the last one.
+      expect(
+        tester.renderObject(_paint),
+        paints..something(_ticks(count: 5, color: scheme.onSecondaryFixed)),
+      );
+
+      await tester.pumpWidget(
+        _harness(MechanixSlider(value: 50, divisions: 4, onChanged: (_) {})),
+      );
+      // Halfway: stops 0, 1 and the one under the pointer are filled.
+      expect(
+        tester.renderObject(_paint),
+        paints
+          ..something(_ticks(count: 3, color: scheme.onSecondaryFixed))
+          ..something(_ticks(count: 2, color: scheme.secondaryFixedDim)),
+      );
     });
 
     testWidgets('pointer is painted only while pressed or dragging', (
@@ -444,8 +451,8 @@ void main() {
         expect(
           tester.renderObject(_paint),
           paints
-            ..something(_rectColored(scheme.onSecondaryFixed))
-            ..something(_rectColored(scheme.secondaryFixedDim))
+            ..something(_ticks(color: scheme.onSecondaryFixed))
+            ..something(_ticks(color: scheme.secondaryFixedDim))
             ..something(_rectColored(scheme.onSecondary)),
         );
       });
@@ -490,9 +497,9 @@ void main() {
         tester.renderObject(_paint),
         paints
           ..something(
-            _rectColored(scheme.onSecondaryFixed.withValues(alpha: 0.16)),
+            _ticks(color: scheme.onSecondaryFixed.withValues(alpha: 0.16)),
           )
-          ..something(_rectColored(scheme.secondaryFixedDim)),
+          ..something(_ticks(color: scheme.secondaryFixedDim)),
       );
 
       await _press(tester);

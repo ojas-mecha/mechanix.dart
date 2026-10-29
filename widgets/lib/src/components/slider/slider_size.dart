@@ -32,6 +32,21 @@ class SliderSizeConfig {
     this.pointerWidth = 2,
   });
 
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is SliderSizeConfig &&
+        barHeight == other.barHeight &&
+        pointerHeight == other.pointerHeight &&
+        tickWidth == other.tickWidth &&
+        tickGap == other.tickGap &&
+        pointerWidth == other.pointerWidth;
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(barHeight, pointerHeight, tickWidth, tickGap, pointerWidth);
+
   factory SliderSizeConfig.of(MechanixSliderSize size) {
     switch (size) {
       case MechanixSliderSize.xSmall:

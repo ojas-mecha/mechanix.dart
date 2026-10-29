@@ -157,19 +157,24 @@ class MechanixSliderTheme extends InheritedTheme {
   /// Falls back to the [ThemeData] extension, then to
   /// [SliderThemeDataConfig.standard] built from the ambient [ThemeData].
   static SliderThemeDataConfig of(BuildContext context) {
-    final theme = context
-        .dependOnInheritedWidgetOfExactType<MechanixSliderTheme>();
-    if (theme != null) return theme.data;
-
     final themeData = Theme.of(context);
-    final ext = themeData.extension<SliderThemeDataConfig>();
-    if (ext != null) return ext;
+    final standard = _standardCache[themeData] ??=
+        SliderThemeDataConfig.standard(
+          themeData.colorScheme,
+          themeData.textTheme,
+        );
 
-    return SliderThemeDataConfig.standard(
-      themeData.colorScheme,
-      themeData.textTheme,
-    );
+    final ext = themeData.extension<SliderThemeDataConfig>();
+    final inherited = context
+        .dependOnInheritedWidgetOfExactType<MechanixSliderTheme>();
+
+    return standard.merge(ext).merge(inherited?.data);
   }
+
+  /// Default configs keyed by the [ThemeData] they were built from, so a
+  /// rebuild does not recreate the state-resolving closures.
+  static final Expando<SliderThemeDataConfig> _standardCache =
+      Expando<SliderThemeDataConfig>();
 
   @override
   bool updateShouldNotify(MechanixSliderTheme oldWidget) =>

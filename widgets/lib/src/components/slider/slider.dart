@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -95,18 +98,40 @@ class _MechanixSliderState extends State<MechanixSlider> {
   /// Space between the pointer and the value label.
   static const double _labelGap = 4.0;
 
+  final _SliderPaintCache _paintCache = _SliderPaintCache();
+
   bool _isHovered = false;
   bool _isFocused = false;
   bool _isDragging = false;
   bool _isPressed = false;
   double? _lastEmittedValue;
 
-  double get _range => widget.max - widget.min;
+  late double _range;
+  late double _step;
+  late double _pageStep;
+  late SliderSizeConfig _sizeConfig;
+  TextDirection _textDirection = TextDirection.ltr;
+  Set<WidgetState>? _cachedStates;
 
-  double get _step =>
-      widget.divisions != null ? _range / widget.divisions! : _range / 100;
+  @override
+  void initState() {
+    super.initState();
+    _updateDimensions();
+  }
 
-  double get _pageStep => _range / 10 > _step ? _range / 10 : _step;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _textDirection = Directionality.of(context);
+  }
+
+  void _updateDimensions() {
+    _range = widget.max - widget.min;
+    _step =
+        widget.divisions != null ? _range / widget.divisions! : _range / 100;
+    _pageStep = _range / 10 > _step ? _range / 10 : _step;
+    _sizeConfig = SliderSizeConfig.of(widget.size);
+  }
 
   String _format(double value) =>
       widget.labelFormatter?.call(value) ?? value.round().toString();
@@ -123,14 +148,18 @@ class _MechanixSliderState extends State<MechanixSlider> {
       widget.direction == Axis.vertical || textDirection == TextDirection.rtl;
 
   /// Converts a local position into a value, along the slider axis.
-  double _valueForPosition(
-    Offset position,
-    double length,
-    double pointerWidth,
-    TextDirection textDirection,
-  ) {
-    var main = widget.direction == Axis.horizontal ? position.dx : position.dy;
-    if (_isReversed(textDirection)) main = length - main;
+  ///
+  /// The length is read from the laid out render box, so no [LayoutBuilder]
+  /// is needed to know it during build.
+  double _valueAt(Offset position) {
+    final renderBox = context.findRenderObject() as RenderBox?;
+    if (renderBox == null || !renderBox.hasSize) return widget.value;
+    final size = renderBox.size;
+    final isHorizontal = widget.direction == Axis.horizontal;
+    final length = isHorizontal ? size.width : size.height;
+    final pointerWidth = _sizeConfig.pointerWidth;
+    var main = isHorizontal ? position.dx : position.dy;
+    if (_isReversed(_textDirection)) main = length - main;
     final track = length - pointerWidth;
     final t = track <= 0
         ? 0.0
@@ -139,6 +168,7 @@ class _MechanixSliderState extends State<MechanixSlider> {
   }
 
   void _emit(double value) {
+    if (value == _lastEmittedValue) return;
     _lastEmittedValue = value;
     if (value != widget.value) widget.onChanged?.call(value);
   }
@@ -151,14 +181,36 @@ class _MechanixSliderState extends State<MechanixSlider> {
     widget.onChangeEnd?.call(value);
   }
 
-  void _handleDragStart(double value) {
-    setState(() => _isDragging = true);
-    widget.onChangeStart?.call(widget.value);
-    _emit(value);
+  void _setPressed(bool value) {
+    if (_isPressed != value) {
+      _cachedStates = null;
+      setState(() => _isPressed = value);
+    }
   }
 
-  void _handleDragEnd() {
+  void _setHovered(bool value) {
+    if (_isHovered != value) {
+      _cachedStates = null;
+      setState(() => _isHovered = value);
+    }
+  }
+
+  void _handleTapUp(TapUpDetails details) =>
+      _commit(_valueAt(details.localPosition));
+
+  void _handleDragStart(DragStartDetails details) {
+    _cachedStates = null;
+    setState(() => _isDragging = true);
+    widget.onChangeStart?.call(widget.value);
+    _emit(_valueAt(details.localPosition));
+  }
+
+  void _handleDragUpdate(DragUpdateDetails details) =>
+      _emit(_valueAt(details.localPosition));
+
+  void _handleDragEnd([DragEndDetails? _]) {
     if (!_isDragging) return;
+    _cachedStates = null;
     setState(() => _isDragging = false);
     widget.onChangeEnd?.call(_lastEmittedValue ?? widget.value);
   }
@@ -167,7 +219,7 @@ class _MechanixSliderState extends State<MechanixSlider> {
     if (!widget.isEnabled || event is KeyUpEvent) {
       return KeyEventResult.ignored;
     }
-    final rtl = Directionality.of(context) == TextDirection.rtl;
+    final rtl = _textDirection == TextDirection.rtl;
     final key = event.logicalKey;
 
     double? target;
@@ -194,17 +246,27 @@ class _MechanixSliderState extends State<MechanixSlider> {
     return KeyEventResult.handled;
   }
 
-  Set<WidgetState> get _states => {
-    if (!widget.isEnabled) WidgetState.disabled,
-    if (_isHovered) WidgetState.hovered,
-    if (_isFocused) WidgetState.focused,
-    if (_isPressed) WidgetState.pressed,
-    if (_isDragging) WidgetState.dragged,
-  };
+  Set<WidgetState> get _states =>
+      _cachedStates ??= {
+        if (!widget.isEnabled) WidgetState.disabled,
+        if (_isHovered) WidgetState.hovered,
+        if (_isFocused) WidgetState.focused,
+        if (_isPressed) WidgetState.pressed,
+        if (_isDragging) WidgetState.dragged,
+      };
 
   @override
   void didUpdateWidget(MechanixSlider oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.min != widget.min ||
+        oldWidget.max != widget.max ||
+        oldWidget.divisions != widget.divisions ||
+        oldWidget.size != widget.size) {
+      _updateDimensions();
+    }
+    if (oldWidget.isEnabled != widget.isEnabled) {
+      _cachedStates = null;
+    }
     if (!widget.isEnabled) {
       _isDragging = false;
       _isPressed = false;
@@ -219,12 +281,35 @@ class _MechanixSliderState extends State<MechanixSlider> {
       );
     }
 
-    final textDirection = Directionality.of(context);
-    final sizeConfig = SliderSizeConfig.of(widget.size);
+    final themeData = Theme.of(context);
+    final colorScheme = themeData.colorScheme;
+    final textDirection = _textDirection;
+    final sizeConfig = _sizeConfig;
     final themeConfig = MechanixSliderTheme.of(context).merge(widget.theme);
     final states = _states;
     final isHorizontal = widget.direction == Axis.horizontal;
     final isEnabled = widget.isEnabled;
+    final dragsHorizontally = isEnabled && isHorizontal;
+    final dragsVertically = isEnabled && !isHorizontal;
+
+    final activeTickColor =
+        themeConfig.activeTickColor?.resolve(states) ??
+        (isEnabled
+            ? colorScheme.onSecondaryFixed
+            : colorScheme.onSecondaryFixed.withValues(alpha: 0.16));
+    final inactiveTickColor =
+        themeConfig.inactiveTickColor?.resolve(states) ??
+        colorScheme.secondaryFixedDim;
+    final pointerColor =
+        themeConfig.pointerColor?.resolve(states) ??
+        (isEnabled
+            ? colorScheme.onSecondary
+            : colorScheme.onSecondary.withValues(alpha: 0.32));
+    final labelStyle =
+        themeConfig.valueLabelStyle ??
+        themeData.textTheme.labelLarge?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        );
 
     final t = _range == 0
         ? 0.0
@@ -252,105 +337,239 @@ class _MechanixSliderState extends State<MechanixSlider> {
         onFocusChange: (focused) => setState(() => _isFocused = focused),
         child: MouseRegion(
           cursor: isEnabled ? SystemMouseCursors.click : MouseCursor.defer,
-          onEnter: (_) => setState(() => _isHovered = true),
-          onExit: (_) => setState(() => _isHovered = false),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final maxLength = isHorizontal
-                  ? constraints.maxWidth
-                  : constraints.maxHeight;
-              final length = maxLength.isFinite ? maxLength : _defaultLength;
+          onEnter: (_) => _setHovered(true),
+          onExit: (_) => _setHovered(false),
+          // A raw Listener reacts to the press immediately; the tap
+          // recognizer only fires after the gesture arena resolves.
+          child: Listener(
+            onPointerDown: isEnabled ? (_) => _setPressed(true) : null,
+            onPointerUp: (_) => _setPressed(false),
+            onPointerCancel: (_) => _setPressed(false),
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              excludeFromSemantics: true,
+              onTapUp: isEnabled ? _handleTapUp : null,
+              onHorizontalDragStart: dragsHorizontally
+                  ? _handleDragStart
+                  : null,
+              onHorizontalDragUpdate: dragsHorizontally
+                  ? _handleDragUpdate
+                  : null,
+              onHorizontalDragEnd: dragsHorizontally ? _handleDragEnd : null,
+              onHorizontalDragCancel: dragsHorizontally ? _handleDragEnd : null,
+              onVerticalDragStart: dragsVertically ? _handleDragStart : null,
+              onVerticalDragUpdate: dragsVertically ? _handleDragUpdate : null,
+              onVerticalDragEnd: dragsVertically ? _handleDragEnd : null,
+              onVerticalDragCancel: dragsVertically ? _handleDragEnd : null,
+              child: LimitedBox(
+                maxWidth: _defaultLength,
+                maxHeight: _defaultLength,
+                child: SizedBox(
+                  width: isHorizontal
+                      ? double.infinity
+                      : sizeConfig.pointerHeight,
+                  height: isHorizontal
+                      ? sizeConfig.pointerHeight
+                      : double.infinity,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final length = isHorizontal
+                          ? constraints.maxWidth
+                          : constraints.maxHeight;
+                      final pointerWidth = sizeConfig.pointerWidth;
+                      final pointerCenter =
+                          pointerWidth / 2 + t * (length - pointerWidth);
+                      final reversed = _isReversed(textDirection);
+                      final along =
+                          reversed ? length - pointerCenter : pointerCenter;
 
-              double valueAt(Offset position) => _valueForPosition(
-                position,
-                length,
-                sizeConfig.pointerWidth,
-                textDirection,
-              );
-
-              final painter = _SliderPainter(
-                fraction: t,
-                divisions: widget.divisions,
-                direction: widget.direction,
-                reversed: _isReversed(textDirection),
-                sizeConfig: sizeConfig,
-                activeTickColor:
-                    themeConfig.activeTickColor?.resolve(states) ?? Colors.grey,
-                inactiveTickColor:
-                    themeConfig.inactiveTickColor?.resolve(states) ??
-                    Colors.grey.shade800,
-                pointerColor:
-                    themeConfig.pointerColor?.resolve(states) ?? Colors.orange,
-                showPointer: isActive,
-                label: widget.showValueLabel && isActive ? valueText : null,
-                labelStyle: themeConfig.valueLabelStyle,
-                labelGap: _labelGap,
-                textDirection: textDirection,
-              );
-
-              // A raw Listener reacts to the press immediately; the tap
-              // recognizer only fires after the gesture arena resolves.
-              return Listener(
-                onPointerDown: isEnabled
-                    ? (_) => setState(() => _isPressed = true)
-                    : null,
-                onPointerUp: (_) => setState(() => _isPressed = false),
-                onPointerCancel: (_) => setState(() => _isPressed = false),
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  excludeFromSemantics: true,
-                  onTapUp: isEnabled
-                      ? (details) => _commit(valueAt(details.localPosition))
-                      : null,
-                  onHorizontalDragStart: isEnabled && isHorizontal
-                      ? (details) =>
-                            _handleDragStart(valueAt(details.localPosition))
-                      : null,
-                  onHorizontalDragUpdate: isEnabled && isHorizontal
-                      ? (details) => _emit(valueAt(details.localPosition))
-                      : null,
-                  onHorizontalDragEnd: isEnabled && isHorizontal
-                      ? (_) => _handleDragEnd()
-                      : null,
-                  onHorizontalDragCancel: isEnabled && isHorizontal
-                      ? _handleDragEnd
-                      : null,
-                  onVerticalDragStart: isEnabled && !isHorizontal
-                      ? (details) =>
-                            _handleDragStart(valueAt(details.localPosition))
-                      : null,
-                  onVerticalDragUpdate: isEnabled && !isHorizontal
-                      ? (details) => _emit(valueAt(details.localPosition))
-                      : null,
-                  onVerticalDragEnd: isEnabled && !isHorizontal
-                      ? (_) => _handleDragEnd()
-                      : null,
-                  onVerticalDragCancel: isEnabled && !isHorizontal
-                      ? _handleDragEnd
-                      : null,
-                  child: CustomPaint(
-                    painter: painter,
-                    size: isHorizontal
-                        ? Size(length, sizeConfig.pointerHeight)
-                        : Size(sizeConfig.pointerHeight, length),
+                      return Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Positioned.fill(
+                            // Dragging repaints every frame; keep that from dirtying
+                            // the ancestors' layers.
+                            child: RepaintBoundary(
+                              child: CustomPaint(
+                                painter: _SliderPainter(
+                                  cache: _paintCache,
+                                  fraction: t,
+                                  divisions: widget.divisions,
+                                  direction: widget.direction,
+                                  reversed: reversed,
+                                  sizeConfig: sizeConfig,
+                                  activeTickColor: activeTickColor,
+                                  inactiveTickColor: inactiveTickColor,
+                                  pointerColor: pointerColor,
+                                  showPointer: isActive,
+                                ),
+                              ),
+                            ),
+                          ),
+                          if (widget.showValueLabel && isActive)
+                            _buildValueLabel(
+                              along: along,
+                              sizeConfig: sizeConfig,
+                              labelStyle: labelStyle,
+                              textDirection: textDirection,
+                              valueText: valueText,
+                              isHorizontal: isHorizontal,
+                            ),
+                        ],
+                      );
+                    },
                   ),
                 ),
-              );
-            },
+              ),
+            ),
           ),
         ),
       ),
     );
   }
+
+  Widget _buildValueLabel({
+    required double along,
+    required SliderSizeConfig sizeConfig,
+    required TextStyle? labelStyle,
+    required TextDirection textDirection,
+    required String valueText,
+    required bool isHorizontal,
+  }) {
+    final textWidget = IgnorePointer(
+      child: Text(
+        valueText,
+        style: labelStyle,
+        textDirection: textDirection,
+      ),
+    );
+
+    if (isHorizontal) {
+      return Positioned(
+        left: along,
+        bottom: sizeConfig.pointerHeight + _labelGap,
+        child: FractionalTranslation(
+          translation: const Offset(-0.5, 0.0),
+          child: textWidget,
+        ),
+      );
+    }
+
+    final isRtl = textDirection == TextDirection.rtl;
+    return Positioned(
+      left: isRtl ? sizeConfig.pointerHeight + _labelGap : null,
+      right: isRtl ? null : sizeConfig.pointerHeight + _labelGap,
+      top: along,
+      child: FractionalTranslation(
+        translation: const Offset(0.0, -0.5),
+        child: textWidget,
+      ),
+    );
+  }
 }
 
-/// Paints the tick bar and, while active, the value pointer and the optional
-/// value label.
+/// Paint resources that outlive a single [_SliderPainter], so a drag frame
+/// only slices cached data instead of rebuilding tick geometry, paints or
+/// re-laying out the label text.
+class _SliderPaintCache {
+  final Paint activePaint = Paint();
+  final Paint inactivePaint = Paint();
+  final Paint pointerPaint = Paint();
+
+  /// Tick centers along the main axis, measured from the start of the fill,
+  /// in ascending order.
+  Float64List tickCenters = Float64List(0);
+
+  /// One line segment (x0, y0, x1, y1) per tick, across the slider axis, in
+  /// the same order as [tickCenters].
+  Float32List tickLines = Float32List(0);
+
+  Size? _size;
+  int? _divisions;
+  Axis? _direction;
+  bool? _reversed;
+  SliderSizeConfig? _sizeConfig;
+
+  /// Recomputes the tick geometry only when an input it depends on changed.
+  void updateTicks({
+    required Size size,
+    required int? divisions,
+    required Axis direction,
+    required bool reversed,
+    required SliderSizeConfig sizeConfig,
+  }) {
+    if (size == _size &&
+        divisions == _divisions &&
+        direction == _direction &&
+        reversed == _reversed &&
+        sizeConfig == _sizeConfig) {
+      return;
+    }
+    _size = size;
+    _divisions = divisions;
+    _direction = direction;
+    _reversed = reversed;
+    _sizeConfig = sizeConfig;
+
+    final isHorizontal = direction == Axis.horizontal;
+    final length = isHorizontal ? size.width : size.height;
+    final crossCenter = (isHorizontal ? size.height : size.width) / 2;
+    final halfBar = sizeConfig.barHeight / 2;
+
+    final centers = _computeTickCenters(length, divisions, sizeConfig);
+    final lines = Float32List(centers.length * 4);
+    for (var i = 0; i < centers.length; i++) {
+      final along = reversed ? length - centers[i] : centers[i];
+      final j = i * 4;
+      if (isHorizontal) {
+        lines[j] = along;
+        lines[j + 1] = crossCenter - halfBar;
+        lines[j + 2] = along;
+        lines[j + 3] = crossCenter + halfBar;
+      } else {
+        lines[j] = crossCenter - halfBar;
+        lines[j + 1] = along;
+        lines[j + 2] = crossCenter + halfBar;
+        lines[j + 3] = along;
+      }
+    }
+    tickCenters = centers;
+    tickLines = lines;
+  }
+
+  static Float64List _computeTickCenters(
+    double length,
+    int? divisions,
+    SliderSizeConfig sizeConfig,
+  ) {
+    if (divisions != null) {
+      final track = length - sizeConfig.pointerWidth;
+      final centers = Float64List(divisions + 1);
+      for (var i = 0; i <= divisions; i++) {
+        centers[i] = sizeConfig.pointerWidth / 2 + track * i / divisions;
+      }
+      return centers;
+    }
+    final tickWidth = sizeConfig.tickWidth;
+    final pitch = tickWidth + sizeConfig.tickGap;
+    final count = ((length + sizeConfig.tickGap) / pitch).floor();
+    if (count < 2) return Float64List(1)..[0] = length / 2;
+    final spacing = (length - tickWidth) / (count - 1);
+    final centers = Float64List(count);
+    for (var i = 0; i < count; i++) {
+      centers[i] = tickWidth / 2 + spacing * i;
+    }
+    return centers;
+  }
+}
+
+/// Paints the tick bar and, while active, the value pointer.
 ///
 /// Positions are computed along the "main" axis measured from the start of
 /// the fill (the minimum value), then mapped onto the canvas.
 class _SliderPainter extends CustomPainter {
   _SliderPainter({
+    required this.cache,
     required this.fraction,
     required this.divisions,
     required this.direction,
@@ -360,12 +579,9 @@ class _SliderPainter extends CustomPainter {
     required this.inactiveTickColor,
     required this.pointerColor,
     required this.showPointer,
-    required this.label,
-    required this.labelStyle,
-    required this.labelGap,
-    required this.textDirection,
   });
 
+  final _SliderPaintCache cache;
   final double fraction;
   final int? divisions;
   final Axis direction;
@@ -375,10 +591,6 @@ class _SliderPainter extends CustomPainter {
   final Color inactiveTickColor;
   final Color pointerColor;
   final bool showPointer;
-  final String? label;
-  final TextStyle? labelStyle;
-  final double labelGap;
-  final TextDirection textDirection;
 
   bool get _isHorizontal => direction == Axis.horizontal;
 
@@ -401,41 +613,77 @@ class _SliderPainter extends CustomPainter {
           );
   }
 
-  /// Centers of every tick along the main axis.
-  List<double> _tickCenters(double length) {
-    final tickWidth = sizeConfig.tickWidth;
-    final divisions = this.divisions;
-    if (divisions != null) {
-      final track = length - sizeConfig.pointerWidth;
-      return [
-        for (var i = 0; i <= divisions; i++)
-          sizeConfig.pointerWidth / 2 + track * i / divisions,
-      ];
+  /// Index of the first entry in the ascending [values] that is greater than
+  /// [bound], or greater than or equal to it when [inclusive].
+  static int _firstIndex(Float64List values, double bound, bool inclusive) {
+    var low = 0;
+    var high = values.length;
+    while (low < high) {
+      final mid = (low + high) >> 1;
+      final v = values[mid];
+      if (inclusive ? v < bound : v <= bound) {
+        low = mid + 1;
+      } else {
+        high = mid;
+      }
     }
-    final pitch = tickWidth + sizeConfig.tickGap;
-    final count = ((length + sizeConfig.tickGap) / pitch).floor();
-    if (count < 2) return [length / 2];
-    final spacing = (length - tickWidth) / (count - 1);
-    return [for (var i = 0; i < count; i++) tickWidth / 2 + spacing * i];
+    return low;
+  }
+
+  void _drawTicks(Canvas canvas, int start, int end, Paint paint) {
+    if (end <= start) return;
+    final lines = (start == 0 && end == cache.tickCenters.length)
+        ? cache.tickLines
+        : Float32List.sublistView(cache.tickLines, start * 4, end * 4);
+    canvas.drawRawPoints(
+      ui.PointMode.lines,
+      lines,
+      paint,
+    );
   }
 
   @override
   void paint(Canvas canvas, Size size) {
+    cache.updateTicks(
+      size: size,
+      divisions: divisions,
+      direction: direction,
+      reversed: reversed,
+      sizeConfig: sizeConfig,
+    );
+
     final length = _isHorizontal ? size.width : size.height;
     final pointerWidth = sizeConfig.pointerWidth;
     final pointerCenter = pointerWidth / 2 + fraction * (length - pointerWidth);
     final clearance = pointerWidth / 2 + sizeConfig.tickGap;
 
-    final activePaint = Paint()..color = activeTickColor;
-    final inactivePaint = Paint()..color = inactiveTickColor;
+    final centers = cache.tickCenters;
+    final activeEnd = showPointer
+        ? _firstIndex(centers, pointerCenter - clearance, false)
+        : fraction == 0
+        ? 0
+        : _firstIndex(centers, pointerCenter + 1e-6, false);
+    final inactiveStart = showPointer
+        ? _firstIndex(centers, pointerCenter + clearance, true)
+        : activeEnd;
 
-    for (final center in _tickCenters(length)) {
-      if (showPointer && (center - pointerCenter).abs() < clearance) continue;
-      canvas.drawRect(
-        _rect(size, center, sizeConfig.tickWidth, sizeConfig.barHeight),
-        center < pointerCenter ? activePaint : inactivePaint,
-      );
-    }
+    final tickWidth = sizeConfig.tickWidth;
+    _drawTicks(
+      canvas,
+      0,
+      activeEnd,
+      cache.activePaint
+        ..color = activeTickColor
+        ..strokeWidth = tickWidth,
+    );
+    _drawTicks(
+      canvas,
+      inactiveStart,
+      centers.length,
+      cache.inactivePaint
+        ..color = inactiveTickColor
+        ..strokeWidth = tickWidth,
+    );
 
     if (!showPointer) return;
     final pointerRect = _rect(
@@ -444,47 +692,19 @@ class _SliderPainter extends CustomPainter {
       pointerWidth,
       sizeConfig.pointerHeight,
     );
-    canvas.drawRect(pointerRect, Paint()..color = pointerColor);
-
-    final label = this.label;
-    if (label == null) return;
-    final textPainter = TextPainter(
-      text: TextSpan(text: label, style: labelStyle),
-      textDirection: textDirection,
-    )..layout();
-
-    // The label is painted outside the slider bounds: above the pointer when
-    // horizontal, beside it on the start side when vertical.
-    final Offset labelOffset;
-    if (_isHorizontal) {
-      labelOffset = Offset(
-        pointerRect.center.dx - textPainter.width / 2,
-        pointerRect.top - labelGap - textPainter.height,
-      );
-    } else {
-      final dx = textDirection == TextDirection.rtl
-          ? pointerRect.right + labelGap
-          : pointerRect.left - labelGap - textPainter.width;
-      labelOffset = Offset(dx, pointerRect.center.dy - textPainter.height / 2);
-    }
-    textPainter.paint(canvas, labelOffset);
-    textPainter.dispose();
+    canvas.drawRect(pointerRect, cache.pointerPaint..color = pointerColor);
   }
 
   @override
   bool shouldRepaint(_SliderPainter oldDelegate) {
     return fraction != oldDelegate.fraction ||
-        divisions != oldDelegate.divisions ||
-        direction != oldDelegate.direction ||
-        reversed != oldDelegate.reversed ||
-        sizeConfig.barHeight != oldDelegate.sizeConfig.barHeight ||
-        sizeConfig.pointerHeight != oldDelegate.sizeConfig.pointerHeight ||
+        showPointer != oldDelegate.showPointer ||
         activeTickColor != oldDelegate.activeTickColor ||
         inactiveTickColor != oldDelegate.inactiveTickColor ||
         pointerColor != oldDelegate.pointerColor ||
-        showPointer != oldDelegate.showPointer ||
-        label != oldDelegate.label ||
-        labelStyle != oldDelegate.labelStyle ||
-        textDirection != oldDelegate.textDirection;
+        divisions != oldDelegate.divisions ||
+        direction != oldDelegate.direction ||
+        reversed != oldDelegate.reversed ||
+        sizeConfig != oldDelegate.sizeConfig;
   }
 }
