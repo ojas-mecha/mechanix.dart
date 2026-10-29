@@ -448,6 +448,7 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
         MenuThemeDataConfig.standard(colorScheme, textTheme, shapeTheme),
         SearchBarThemeDataConfig.standard(colorScheme, textTheme),
+        SliderThemeDataConfig.standard(colorScheme, textTheme),
       ],
     );
   }
